@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { QuizStep, QuizAnswers, UserProfile } from '@/types/quiz';
 import { quizQuestions } from '@/data/quizQuestions';
 import { determineProfile } from '@/data/userProfiles';
@@ -8,56 +8,52 @@ import { QuizQuestion } from './QuizQuestion';
 import { QuizLoading } from './QuizLoading';
 import { LeadCapture } from './LeadCapture';
 import { QuizResults } from './QuizResults';
-import { Button } from '@/components/ui/button';
-import { ArrowLeft, ArrowRight } from 'lucide-react';
+import { DiagonalLines } from './DiagonalLines';
 
 export function Quiz() {
   const [step, setStep] = useState<QuizStep>('cover');
-  const [currentQuestion, setCurrentQuestion] = useState(0);
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState<QuizAnswers>({});
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [userName, setUserName] = useState('');
 
-  const handleStart = () => {
+  const currentQuestion = quizQuestions[currentQuestionIndex];
+
+  const handleStart = useCallback(() => {
     setStep('questions');
-  };
+  }, []);
 
-  const handleAnswer = (answerId: string) => {
-    const question = quizQuestions[currentQuestion];
-    setAnswers((prev) => ({
+  const handleAnswer = useCallback((answerId: string) => {
+    setAnswers(prev => ({
       ...prev,
-      [question.id]: answerId,
+      [currentQuestion.id]: answerId,
     }));
-  };
+  }, [currentQuestion?.id]);
 
-  const handleNext = () => {
-    if (currentQuestion < quizQuestions.length - 1) {
-      setCurrentQuestion((prev) => prev + 1);
+  const handleNext = useCallback(() => {
+    if (currentQuestionIndex < quizQuestions.length - 1) {
+      setCurrentQuestionIndex(prev => prev + 1);
     } else {
       setStep('loading');
     }
-  };
+  }, [currentQuestionIndex]);
 
-  const handlePrevious = () => {
-    if (currentQuestion > 0) {
-      setCurrentQuestion((prev) => prev - 1);
+  const handlePrevious = useCallback(() => {
+    if (currentQuestionIndex > 0) {
+      setCurrentQuestionIndex(prev => prev - 1);
     }
-  };
+  }, [currentQuestionIndex]);
 
-  const handleLoadingComplete = () => {
+  const handleLoadingComplete = useCallback(() => {
     setStep('lead-capture');
-  };
+  }, []);
 
-  const handleLeadSubmit = (data: { name: string; whatsapp: string; email: string }) => {
+  const handleLeadSubmit = useCallback((data: { name: string; whatsapp: string; email: string }) => {
     setUserName(data.name);
     const userProfile = determineProfile(answers);
     setProfile(userProfile);
     setStep('results');
-  };
-
-  const currentQuestionData = quizQuestions[currentQuestion];
-  const currentAnswer = answers[currentQuestionData?.id];
-  const canProceed = currentAnswer !== undefined;
+  }, [answers]);
 
   if (step === 'cover') {
     return <QuizCover onStart={handleStart} />;
@@ -75,44 +71,31 @@ export function Quiz() {
     return <QuizResults profile={profile} userName={userName} />;
   }
 
+  const canGoNext = !!answers[currentQuestion?.id];
+  const canGoBack = currentQuestionIndex > 0;
+
   return (
-    <div className="min-h-screen gradient-dark py-8 px-4">
-      <div className="max-w-2xl mx-auto">
+    <div className="min-h-screen gradient-dark relative overflow-hidden">
+      <DiagonalLines />
+      
+      <div className="relative z-10 max-w-2xl mx-auto px-4 py-8">
         <QuizProgress 
-          current={currentQuestion + 1} 
-          total={quizQuestions.length} 
+          current={currentQuestionIndex + 1} 
+          total={quizQuestions.length}
+          phase={currentQuestion.phase}
         />
-
+        
         <QuizQuestion
-          key={currentQuestion}
-          question={currentQuestionData}
-          selectedAnswer={currentAnswer}
+          question={currentQuestion}
+          selectedAnswer={answers[currentQuestion.id]}
           onAnswer={handleAnswer}
+          onNext={handleNext}
+          onPrevious={handlePrevious}
+          currentIndex={currentQuestionIndex}
+          totalQuestions={quizQuestions.length}
+          canGoBack={canGoBack}
+          canGoNext={canGoNext}
         />
-
-        {/* Navigation */}
-        <div className="flex justify-between items-center mt-8 max-w-2xl mx-auto">
-          <Button
-            variant="ghost"
-            onClick={handlePrevious}
-            disabled={currentQuestion === 0}
-            className="text-muted-foreground hover:text-foreground"
-          >
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            Voltar
-          </Button>
-
-          <Button
-            variant="hero"
-            size="lg"
-            onClick={handleNext}
-            disabled={!canProceed}
-            className="group"
-          >
-            {currentQuestion === quizQuestions.length - 1 ? 'Ver Resultado' : 'Próxima'}
-            <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-          </Button>
-        </div>
       </div>
     </div>
   );

@@ -1,102 +1,134 @@
 import { useEffect, useState } from 'react';
-import { loadingSteps } from '@/data/quizQuestions';
-import { Activity, CheckCircle } from 'lucide-react';
+import { Database } from 'lucide-react';
+import { DiagonalLines } from './DiagonalLines';
 
 interface QuizLoadingProps {
   onComplete: () => void;
 }
 
+const loadingMessages = [
+  'Analisando suas respostas...',
+  'Comparando com base de dados de 2.000 alunos...',
+  'Identificando padrões metabólicos...',
+  'Gerando seu protocolo personalizado...',
+];
+
 export function QuizLoading({ onComplete }: QuizLoadingProps) {
-  const [currentStep, setCurrentStep] = useState(0);
-  const [stepProgress, setStepProgress] = useState(0);
+  const [progress, setProgress] = useState(0);
+  const [messageIndex, setMessageIndex] = useState(0);
+  const [metrics, setMetrics] = useState({
+    samples: 0,
+    patterns: 0,
+    precision: 0,
+    confidence: 0,
+  });
 
   useEffect(() => {
-    if (currentStep >= loadingSteps.length) {
-      setTimeout(onComplete, 500);
-      return;
-    }
-
-    const step = loadingSteps[currentStep];
-    const progressInterval = 50;
-    const progressIncrement = 100 / (step.duration / progressInterval);
+    const duration = 4000;
+    const interval = 50;
+    const steps = duration / interval;
+    let currentStep = 0;
 
     const timer = setInterval(() => {
-      setStepProgress((prev) => {
-        if (prev >= 100) {
-          clearInterval(timer);
-          setTimeout(() => {
-            setCurrentStep((s) => s + 1);
-            setStepProgress(0);
-          }, 200);
-          return 100;
-        }
-        return prev + progressIncrement;
+      currentStep++;
+      const newProgress = Math.min((currentStep / steps) * 100, 100);
+      setProgress(newProgress);
+
+      // Update message based on progress
+      const newMessageIndex = Math.min(
+        Math.floor((newProgress / 100) * loadingMessages.length),
+        loadingMessages.length - 1
+      );
+      setMessageIndex(newMessageIndex);
+
+      // Animate metrics
+      setMetrics({
+        samples: Math.floor((newProgress / 100) * 2047),
+        patterns: Math.floor((newProgress / 100) * 156),
+        precision: Math.min((newProgress / 100) * 94.3, 94.3),
+        confidence: Math.min((newProgress / 100) * 98.1, 98.1),
       });
-    }, progressInterval);
+
+      if (currentStep >= steps) {
+        clearInterval(timer);
+        setTimeout(onComplete, 500);
+      }
+    }, interval);
 
     return () => clearInterval(timer);
-  }, [currentStep, onComplete]);
+  }, [onComplete]);
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center px-4 gradient-dark">
-      {/* Animated Logo */}
-      <div className="relative mb-12">
-        <div className="w-24 h-24 rounded-full gradient-primary flex items-center justify-center animate-pulse-glow">
-          <Activity className="w-12 h-12 text-primary-foreground animate-spin-slow" />
+    <div className="min-h-screen flex flex-col items-center justify-center px-4 gradient-dark relative overflow-hidden">
+      <DiagonalLines />
+      
+      <div className="relative z-10 w-full max-w-lg mx-auto text-center">
+        {/* Icon */}
+        <div className="mb-8 animate-pulse">
+          <div className="w-24 h-24 mx-auto rounded-2xl bg-card border-2 border-primary shadow-[0_0_30px_rgba(255,107,0,0.3)] flex items-center justify-center">
+            <Database className="w-12 h-12 text-primary" />
+          </div>
         </div>
-        <div className="absolute inset-0 w-24 h-24 rounded-full border-4 border-primary/30 animate-ping" />
-      </div>
 
-      {/* Title */}
-      <h2 className="text-2xl md:text-3xl font-bold text-center mb-2">
-        Processando sua Análise
-      </h2>
-      <p className="text-muted-foreground text-center mb-12">
-        Aguarde enquanto geramos seu protocolo personalizado
-      </p>
+        {/* Loading Message */}
+        <h2 className="text-xl md:text-2xl font-bold mb-8 min-h-[3rem]">
+          {loadingMessages[messageIndex]}
+        </h2>
 
-      {/* Steps */}
-      <div className="w-full max-w-md space-y-4">
-        {loadingSteps.map((step, index) => (
-          <div 
-            key={index}
-            className={`flex items-center gap-4 p-4 rounded-lg transition-all duration-300 ${
-              index < currentStep 
-                ? 'bg-primary/10 border border-primary/30' 
-                : index === currentStep 
-                  ? 'bg-card border border-border' 
-                  : 'opacity-40'
-            }`}
-          >
-            <div className="flex-shrink-0">
-              {index < currentStep ? (
-                <CheckCircle className="w-6 h-6 text-primary" />
-              ) : index === currentStep ? (
-                <div className="w-6 h-6 rounded-full border-2 border-primary border-t-transparent animate-spin" />
-              ) : (
-                <div className="w-6 h-6 rounded-full border-2 border-muted-foreground" />
-              )}
+        {/* Progress Bar */}
+        <div className="mb-8">
+          <div className="h-2 bg-muted rounded-full overflow-hidden mb-2">
+            <div 
+              className="h-full bg-primary transition-all duration-100 ease-out rounded-full"
+              style={{ width: `${progress}%` }}
+            />
+          </div>
+          <span className="text-primary font-bold text-lg">
+            {Math.round(progress)}%
+          </span>
+        </div>
+
+        {/* Metrics */}
+        <div className="grid grid-cols-4 gap-2 md:gap-4">
+          <div className="p-3 rounded-xl bg-card border border-border/50">
+            <div className="text-xs uppercase tracking-wider text-muted-foreground mb-1">
+              Amostras
             </div>
-            <div className="flex-1">
-              <p className={`font-medium ${index <= currentStep ? 'text-foreground' : 'text-muted-foreground'}`}>
-                {step.text}
-              </p>
-              {index === currentStep && (
-                <div className="mt-2 h-1 bg-secondary rounded-full overflow-hidden">
-                  <div 
-                    className="h-full gradient-primary transition-all duration-100 rounded-full"
-                    style={{ width: `${stepProgress}%` }}
-                  />
-                </div>
-              )}
+            <div className="text-lg md:text-xl font-bold text-primary">
+              {metrics.samples.toLocaleString()}
             </div>
           </div>
-        ))}
-      </div>
+          <div className="p-3 rounded-xl bg-card border border-border/50">
+            <div className="text-xs uppercase tracking-wider text-muted-foreground mb-1">
+              Padrões
+            </div>
+            <div className="text-lg md:text-xl font-bold text-primary">
+              {metrics.patterns}
+            </div>
+          </div>
+          <div className="p-3 rounded-xl bg-card border border-border/50">
+            <div className="text-xs uppercase tracking-wider text-muted-foreground mb-1">
+              Precisão
+            </div>
+            <div className="text-lg md:text-xl font-bold text-primary">
+              {metrics.precision.toFixed(1)}%
+            </div>
+          </div>
+          <div className="p-3 rounded-xl bg-card border border-border/50">
+            <div className="text-xs uppercase tracking-wider text-muted-foreground mb-1">
+              Confiança
+            </div>
+            <div className="text-lg md:text-xl font-bold text-primary">
+              {metrics.confidence.toFixed(1)}%
+            </div>
+          </div>
+        </div>
 
-      {/* Decorative */}
-      <div className="absolute top-1/3 left-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-1/3 right-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl pointer-events-none" />
+        {/* Bottom text */}
+        <p className="text-muted-foreground text-sm mt-8">
+          Aguarde enquanto processamos sua análise...
+        </p>
+      </div>
     </div>
   );
 }

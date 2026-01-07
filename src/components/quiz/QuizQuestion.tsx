@@ -1,14 +1,32 @@
 import { QuizQuestion as QuestionType } from '@/types/quiz';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { ArrowLeft, ArrowRight } from 'lucide-react';
+import { DotsNavigation } from './DotsNavigation';
 
 interface QuizQuestionProps {
   question: QuestionType;
   selectedAnswer: string | string[] | undefined;
   onAnswer: (answerId: string) => void;
+  onNext: () => void;
+  onPrevious: () => void;
+  currentIndex: number;
+  totalQuestions: number;
+  canGoBack: boolean;
+  canGoNext: boolean;
 }
 
-export function QuizQuestion({ question, selectedAnswer, onAnswer }: QuizQuestionProps) {
+export function QuizQuestion({ 
+  question, 
+  selectedAnswer, 
+  onAnswer,
+  onNext,
+  onPrevious,
+  currentIndex,
+  totalQuestions,
+  canGoBack,
+  canGoNext,
+}: QuizQuestionProps) {
   const isSelected = (optionId: string) => {
     if (Array.isArray(selectedAnswer)) {
       return selectedAnswer.includes(optionId);
@@ -17,45 +35,27 @@ export function QuizQuestion({ question, selectedAnswer, onAnswer }: QuizQuestio
   };
 
   return (
-    <div className="w-full max-w-2xl mx-auto animate-slide-up">
-      {/* Phase Badge */}
-      <div className="flex justify-center mb-4">
-        <span className={cn(
-          "px-3 py-1 rounded-full text-xs font-medium uppercase tracking-wider",
-          question.phase === 'demographic' && "bg-blue-500/20 text-blue-400",
-          question.phase === 'symptom' && "bg-yellow-500/20 text-yellow-400",
-          question.phase === 'diagnosis' && "bg-red-500/20 text-red-400",
-          question.phase === 'dream' && "bg-green-500/20 text-green-400",
-        )}>
-          {question.phase === 'demographic' && 'Perfil Básico'}
-          {question.phase === 'symptom' && 'Sintomas'}
-          {question.phase === 'diagnosis' && 'Diagnóstico'}
-          {question.phase === 'dream' && 'Objetivo'}
-        </span>
-      </div>
-
+    <div className="w-full max-w-2xl mx-auto animate-fade-in">
       {/* Question */}
-      <h2 className="text-2xl md:text-3xl font-bold text-center mb-3">
+      <h2 className="text-2xl md:text-4xl font-extrabold text-center mb-8">
         {question.question}
       </h2>
 
-      {question.subtitle && (
-        <p className="text-muted-foreground text-center mb-8">
-          {question.subtitle}
-        </p>
-      )}
-
       {/* Options */}
-      <div className="grid gap-3">
+      <div className="grid gap-3 mb-8">
         {question.options.map((option) => (
-          <Button
+          <button
             key={option.id}
-            variant={isSelected(option.id) ? 'quizSelected' : 'quiz'}
-            size="quiz"
             onClick={() => onAnswer(option.id)}
-            className="text-left justify-start"
+            className={cn(
+              "w-full p-4 rounded-xl text-left transition-all duration-200",
+              "bg-card border-2 hover:border-primary/50",
+              isSelected(option.id) 
+                ? "border-primary bg-primary/10" 
+                : "border-border/50"
+            )}
           >
-            <div className="flex items-center gap-4 w-full">
+            <div className="flex items-center gap-4">
               {option.icon && (
                 <span className="text-2xl flex-shrink-0">{option.icon}</span>
               )}
@@ -67,22 +67,36 @@ export function QuizQuestion({ question, selectedAnswer, onAnswer }: QuizQuestio
                   </div>
                 )}
               </div>
-              <div className={cn(
-                "w-5 h-5 rounded-full border-2 flex-shrink-0 transition-all",
-                isSelected(option.id) 
-                  ? "border-primary bg-primary" 
-                  : "border-muted-foreground"
-              )}>
-                {isSelected(option.id) && (
-                  <svg className="w-full h-full text-primary-foreground p-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
-                    <polyline points="20 6 9 17 4 12" />
-                  </svg>
-                )}
-              </div>
             </div>
-          </Button>
+          </button>
         ))}
       </div>
+
+      {/* Navigation Buttons */}
+      <div className="flex items-center justify-between gap-4">
+        <Button
+          variant="ghost"
+          onClick={onPrevious}
+          disabled={!canGoBack}
+          className="text-muted-foreground"
+        >
+          <ArrowLeft className="w-4 h-4 mr-2" />
+          Voltar
+        </Button>
+        
+        <Button
+          variant="cta"
+          onClick={onNext}
+          disabled={!canGoNext}
+          className="px-8"
+        >
+          Próxima
+          <ArrowRight className="w-4 h-4 ml-2" />
+        </Button>
+      </div>
+
+      {/* Dots Navigation */}
+      <DotsNavigation current={currentIndex + 1} total={totalQuestions} />
     </div>
   );
 }
