@@ -1,12 +1,10 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { 
   AlertTriangle, 
   Target, 
   Zap, 
-  ChevronLeft,
-  ChevronRight,
   ArrowRight
 } from 'lucide-react';
 import { getResultProfile, UserAnswers, transformations } from '@/lib/quizData';
@@ -15,9 +13,6 @@ export default function Resultado() {
   const navigate = useNavigate();
   const [answers, setAnswers] = useState<UserAnswers>({});
   const [leadData, setLeadData] = useState<{ name: string } | null>(null);
-  const [sliderPosition, setSliderPosition] = useState(50);
-  const sliderRef = useRef<HTMLDivElement>(null);
-  const isDragging = useRef(false);
 
   useEffect(() => {
     const savedAnswers = sessionStorage.getItem('quizAnswers');
@@ -33,45 +28,18 @@ export default function Resultado() {
 
   const profile = getResultProfile(answers);
   
-  // Recuperar gênero das respostas
-  const userGender = answers['gender'] || 'male';
-  
-  // Filtrar transformações por gênero + perfil (apenas 1 transformação exibida)
-  const relevantTransformations = transformations.filter(t => 
-    t.gender === userGender && 
+  // Pegar uma transformação feminina e uma masculina
+  const femaleTransformation = transformations.find(t => 
+    t.gender === 'female' && 
     t.profiles.includes(answers['body-type'] || 'skinny-fat')
-  );
+  ) || transformations.find(t => t.gender === 'female');
   
-  // Garantir apenas UMA transformação exibida
-  const displayedTransformation = relevantTransformations[0] || null;
+  const maleTransformation = transformations.find(t => 
+    t.gender === 'male' && 
+    t.profiles.includes(answers['body-type'] || 'skinny-fat')
+  ) || transformations.find(t => t.gender === 'male');
   
   const firstName = leadData?.name?.split(' ')[0] || 'Você';
-
-  const handleMouseDown = () => {
-    isDragging.current = true;
-  };
-
-  const handleMouseUp = () => {
-    isDragging.current = false;
-  };
-
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (!isDragging.current || !sliderRef.current) return;
-    
-    const rect = sliderRef.current.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const percentage = Math.max(0, Math.min(100, (x / rect.width) * 100));
-    setSliderPosition(percentage);
-  };
-
-  const handleTouchMove = (e: React.TouchEvent) => {
-    if (!sliderRef.current) return;
-    
-    const rect = sliderRef.current.getBoundingClientRect();
-    const x = e.touches[0].clientX - rect.left;
-    const percentage = Math.max(0, Math.min(100, (x / rect.width) * 100));
-    setSliderPosition(percentage);
-  };
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -157,72 +125,92 @@ export default function Resultado() {
         </div>
       </section>
 
-      {/* Before/After Slider */}
+      {/* Transformações Estáticas */}
       <section className="py-12">
         <div className="container mx-auto px-4">
           <h3 className="text-2xl font-bold text-center mb-8">
             Transformações reais de alunos
           </h3>
 
-          {displayedTransformation && (
-            <div 
-              ref={sliderRef}
-              className="relative max-w-lg mx-auto aspect-[3/4] rounded-2xl overflow-hidden cursor-ew-resize select-none"
-              onMouseDown={handleMouseDown}
-              onMouseUp={handleMouseUp}
-              onMouseLeave={handleMouseUp}
-              onMouseMove={handleMouseMove}
-              onTouchMove={handleTouchMove}
-            >
-              {/* After Image */}
-              <img
-                src={displayedTransformation.afterImage}
-                alt="Depois"
-                className="absolute inset-0 w-full h-full object-cover"
-              />
-              
-              {/* Before Image (clipped) */}
-              <div 
-                className="absolute inset-0 overflow-hidden"
-                style={{ width: `${sliderPosition}%` }}
-              >
-                <img
-                  src={displayedTransformation.beforeImage}
-                  alt="Antes"
-                  className="absolute inset-0 w-full h-full object-cover"
-                  style={{ width: `${100 / (sliderPosition / 100)}%`, maxWidth: 'none' }}
-                />
-              </div>
-
-              {/* Slider Handle */}
-              <div 
-                className="absolute top-0 bottom-0 w-1 bg-white shadow-lg cursor-ew-resize"
-                style={{ left: `${sliderPosition}%`, transform: 'translateX(-50%)' }}
-              >
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 bg-white rounded-full shadow-lg flex items-center justify-center">
-                  <ChevronLeft className="w-4 h-4 text-gray-600 -mr-1" />
-                  <ChevronRight className="w-4 h-4 text-gray-600 -ml-1" />
+          <div className="space-y-10 max-w-2xl mx-auto">
+            {/* Transformação Feminina */}
+            {femaleTransformation && (
+              <div className="space-y-4">
+                <div className="relative rounded-2xl overflow-hidden">
+                  <div className="grid grid-cols-2">
+                    {/* Antes */}
+                    <div className="relative">
+                      <img
+                        src={femaleTransformation.beforeImage}
+                        alt="Antes"
+                        className="w-full aspect-[3/4] object-cover"
+                      />
+                      <div className="absolute top-3 left-3 px-3 py-1 bg-black/70 rounded-full text-sm font-medium text-white">
+                        Antes
+                      </div>
+                    </div>
+                    {/* Depois */}
+                    <div className="relative">
+                      <img
+                        src={femaleTransformation.afterImage}
+                        alt="Depois"
+                        className="w-full aspect-[3/4] object-cover"
+                      />
+                      <div className="absolute top-3 right-3 px-3 py-1 bg-primary rounded-full text-sm font-medium text-primary-foreground">
+                        Depois
+                      </div>
+                    </div>
+                  </div>
+                  {/* Linha divisória central */}
+                  <div className="absolute top-0 bottom-0 left-1/2 w-1 bg-white/80 -translate-x-1/2" />
+                </div>
+                <div className="text-center">
+                  <p className="font-semibold">{femaleTransformation.name}, {femaleTransformation.age} anos</p>
+                  <p className="text-sm text-muted-foreground">{femaleTransformation.description}</p>
+                  <p className="text-sm text-primary mt-1">Resultado em {femaleTransformation.duration}</p>
                 </div>
               </div>
+            )}
 
-              {/* Labels */}
-              <div className="absolute top-4 left-4 px-3 py-1 bg-black/70 rounded-full text-sm font-medium">
-                Antes
+            {/* Transformação Masculina */}
+            {maleTransformation && (
+              <div className="space-y-4">
+                <div className="relative rounded-2xl overflow-hidden">
+                  <div className="grid grid-cols-2">
+                    {/* Antes */}
+                    <div className="relative">
+                      <img
+                        src={maleTransformation.beforeImage}
+                        alt="Antes"
+                        className="w-full aspect-[3/4] object-cover"
+                      />
+                      <div className="absolute top-3 left-3 px-3 py-1 bg-black/70 rounded-full text-sm font-medium text-white">
+                        Antes
+                      </div>
+                    </div>
+                    {/* Depois */}
+                    <div className="relative">
+                      <img
+                        src={maleTransformation.afterImage}
+                        alt="Depois"
+                        className="w-full aspect-[3/4] object-cover"
+                      />
+                      <div className="absolute top-3 right-3 px-3 py-1 bg-primary rounded-full text-sm font-medium text-primary-foreground">
+                        Depois
+                      </div>
+                    </div>
+                  </div>
+                  {/* Linha divisória central */}
+                  <div className="absolute top-0 bottom-0 left-1/2 w-1 bg-white/80 -translate-x-1/2" />
+                </div>
+                <div className="text-center">
+                  <p className="font-semibold">{maleTransformation.name}, {maleTransformation.age} anos</p>
+                  <p className="text-sm text-muted-foreground">{maleTransformation.description}</p>
+                  <p className="text-sm text-primary mt-1">Resultado em {maleTransformation.duration}</p>
+                </div>
               </div>
-              <div className="absolute top-4 right-4 px-3 py-1 bg-primary rounded-full text-sm font-medium">
-                Depois
-              </div>
-            </div>
-          )}
-
-          {/* Transformation Info */}
-          {displayedTransformation && (
-            <div className="text-center mt-6 max-w-lg mx-auto">
-              <p className="font-semibold">{displayedTransformation.name}, {displayedTransformation.age} anos</p>
-              <p className="text-sm text-muted-foreground">{displayedTransformation.description}</p>
-              <p className="text-sm text-primary mt-1">Resultado em {displayedTransformation.duration}</p>
-            </div>
-          )}
+            )}
+          </div>
         </div>
       </section>
 
