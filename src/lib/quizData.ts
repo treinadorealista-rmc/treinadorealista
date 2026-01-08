@@ -4,6 +4,8 @@ export interface QuizOption {
   description?: string;
   icon?: string;
   image?: string;
+  category?: 'sedentary' | 'active';
+  score?: number;
 }
 
 export interface QuizQuestion {
@@ -38,9 +40,21 @@ export interface Transformation {
   afterImage: string;
   description: string;
   profiles: string[];
+  gender: 'male' | 'female';
 }
 
 export const quizQuestions: QuizQuestion[] = [
+  {
+    id: 'gender',
+    phase: 'diagnosis',
+    question: 'Qual é o seu gênero biológico?',
+    subtitle: 'Isso nos ajuda a personalizar suas recomendações',
+    type: 'binary',
+    options: [
+      { id: 'male', label: 'Masculino', icon: '👨' },
+      { id: 'female', label: 'Feminino', icon: '👩' },
+    ],
+  },
   {
     id: 'goal',
     phase: 'diagnosis',
@@ -74,10 +88,10 @@ export const quizQuestions: QuizQuestion[] = [
     subtitle: 'Considere treino consistente, não esporádico',
     type: 'multiple',
     options: [
-      { id: 'never', label: 'Nunca treinei sério', description: 'Ou parei há mais de 1 ano', icon: '🆕' },
-      { id: 'beginner', label: 'Menos de 1 ano', description: 'Ainda aprendendo os movimentos', icon: '📅' },
-      { id: 'intermediate', label: '1 a 3 anos', description: 'Já tenho alguma experiência', icon: '📊' },
-      { id: 'advanced', label: 'Mais de 3 anos', description: 'Treino é parte da minha vida', icon: '🏆' },
+      { id: 'never', label: 'Nunca treinei sério', description: 'Ou parei há mais de 1 ano', icon: '🆕', category: 'sedentary' },
+      { id: 'beginner', label: 'Menos de 1 ano', description: 'Ainda aprendendo os movimentos', icon: '📅', category: 'sedentary' },
+      { id: 'intermediate', label: '1 a 3 anos', description: 'Já tenho alguma experiência', icon: '📊', category: 'active' },
+      { id: 'advanced', label: 'Mais de 3 anos', description: 'Treino é parte da minha vida', icon: '🏆', category: 'active' },
     ],
   },
   {
@@ -162,8 +176,9 @@ export const quizQuestions: QuizQuestion[] = [
 ];
 
 export const transformations: Transformation[] = [
+  // Transformações Masculinas
   {
-    id: '1',
+    id: 'm1',
     name: 'Ricardo M.',
     age: 32,
     duration: '12 semanas',
@@ -171,9 +186,10 @@ export const transformations: Transformation[] = [
     afterImage: 'https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?w=300&h=400&fit=crop',
     description: 'Perdeu 12kg e ganhou definição muscular seguindo o protocolo à risca.',
     profiles: ['skinny-fat', 'overweight'],
+    gender: 'male',
   },
   {
-    id: '2',
+    id: 'm2',
     name: 'Carlos A.',
     age: 28,
     duration: '16 semanas',
@@ -181,9 +197,10 @@ export const transformations: Transformation[] = [
     afterImage: 'https://images.unsplash.com/photo-1605296867304-46d5465a13f1?w=300&h=400&fit=crop',
     description: 'Saiu do falso magro e conseguiu o shape que sempre quis.',
     profiles: ['skinny-fat', 'skinny'],
+    gender: 'male',
   },
   {
-    id: '3',
+    id: 'm3',
     name: 'Pedro H.',
     age: 35,
     duration: '20 semanas',
@@ -191,9 +208,10 @@ export const transformations: Transformation[] = [
     afterImage: 'https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?w=300&h=400&fit=crop',
     description: 'Eliminou a barriga e conquistou o abdômen definido aos 35 anos.',
     profiles: ['overweight', 'skinny-fat'],
+    gender: 'male',
   },
   {
-    id: '4',
+    id: 'm4',
     name: 'Lucas S.',
     age: 24,
     duration: '10 semanas',
@@ -201,9 +219,10 @@ export const transformations: Transformation[] = [
     afterImage: 'https://images.unsplash.com/photo-1605296867304-46d5465a13f1?w=300&h=400&fit=crop',
     description: 'Ganhou 8kg de massa magra partindo do zero.',
     profiles: ['skinny', 'athletic'],
+    gender: 'male',
   },
   {
-    id: '5',
+    id: 'm5',
     name: 'Marcos T.',
     age: 29,
     duration: '14 semanas',
@@ -211,10 +230,68 @@ export const transformations: Transformation[] = [
     afterImage: 'https://images.unsplash.com/photo-1605296867304-46d5465a13f1?w=300&h=400&fit=crop',
     description: 'Saiu de um shape bom para um shape excepcional com otimização do protocolo.',
     profiles: ['athletic'],
+    gender: 'male',
+  },
+  // Transformações Femininas
+  {
+    id: 'f1',
+    name: 'Fernanda M.',
+    age: 28,
+    duration: '12 semanas',
+    beforeImage: 'https://images.unsplash.com/photo-1518611012118-696072aa579a?w=300&h=400&fit=crop',
+    afterImage: 'https://images.unsplash.com/photo-1518310383802-640c2de311b2?w=300&h=400&fit=crop',
+    description: 'Eliminou 8kg e conquistou definição muscular com o protocolo personalizado.',
+    profiles: ['skinny-fat', 'overweight'],
+    gender: 'female',
+  },
+  {
+    id: 'f2',
+    name: 'Juliana C.',
+    age: 32,
+    duration: '16 semanas',
+    beforeImage: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=300&h=400&fit=crop',
+    afterImage: 'https://images.unsplash.com/photo-1548690312-e3b507d8c110?w=300&h=400&fit=crop',
+    description: 'Tonificou o corpo e ganhou confiança depois de anos tentando sem sucesso.',
+    profiles: ['skinny-fat', 'skinny'],
+    gender: 'female',
+  },
+  {
+    id: 'f3',
+    name: 'Amanda R.',
+    age: 35,
+    duration: '20 semanas',
+    beforeImage: 'https://images.unsplash.com/photo-1518611012118-696072aa579a?w=300&h=400&fit=crop',
+    afterImage: 'https://images.unsplash.com/photo-1548690312-e3b507d8c110?w=300&h=400&fit=crop',
+    description: 'Perdeu 15kg de forma sustentável e transformou sua relação com o corpo.',
+    profiles: ['overweight', 'skinny-fat'],
+    gender: 'female',
+  },
+  {
+    id: 'f4',
+    name: 'Camila S.',
+    age: 24,
+    duration: '10 semanas',
+    beforeImage: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=300&h=400&fit=crop',
+    afterImage: 'https://images.unsplash.com/photo-1518310383802-640c2de311b2?w=300&h=400&fit=crop',
+    description: 'Ganhou curvas e massa muscular com treinos focados em hipertrofia.',
+    profiles: ['skinny', 'athletic'],
+    gender: 'female',
+  },
+  {
+    id: 'f5',
+    name: 'Beatriz T.',
+    age: 29,
+    duration: '14 semanas',
+    beforeImage: 'https://images.unsplash.com/photo-1548690312-e3b507d8c110?w=300&h=400&fit=crop',
+    afterImage: 'https://images.unsplash.com/photo-1518310383802-640c2de311b2?w=300&h=400&fit=crop',
+    description: 'Otimizou seu shape atlético e alcançou a melhor forma da vida.',
+    profiles: ['athletic'],
+    gender: 'female',
   },
 ];
 
 export const profileResults: Record<string, QuizResult> = {
+  // Perfis para usuários ATIVOS (treina há algum tempo)
   'skinny-fat': {
     profile: 'skinny-fat',
     title: 'Falso Magro com Resistência Metabólica',
@@ -271,6 +348,49 @@ export const profileResults: Record<string, QuizResult> = {
     solution: 'Você precisa de um protocolo de otimização avançada que refine seus treinos, melhore sua recuperação e acelere seus ganhos — tudo construído sobre a base sólida que você já tem.',
     protocolName: 'Protocolo Performance 90D',
   },
+  // Perfis para usuários SEDENTÁRIOS (nunca treinou ou < 1 ano)
+  'skinny-fat-sedentary': {
+    profile: 'skinny-fat',
+    title: 'Falso Magro em Fase de Adaptação',
+    subtitle: 'Seu corpo precisa de uma base antes de progredir',
+    description: 'Você é magro na balança, mas acumula gordura localizada. Como ainda não tem experiência com treinos, seu corpo precisa de uma fase de adaptação antes de protocolos mais intensos.',
+    painPoints: [
+      'Nunca criou o hábito de treinar',
+      'Corpo não está acostumado com exercícios',
+      'Metabolismo lento por falta de estímulo',
+      'Sem base muscular para começar',
+    ],
+    solution: 'Você precisa de um protocolo de primeiros passos que crie hábito, corrija postura e prepare seu corpo. Depois de criar a base, você avança para a recomposição corporal.',
+    protocolName: 'Protocolo Adaptação 90D',
+  },
+  'overweight-sedentary': {
+    profile: 'overweight',
+    title: 'Perfil Iniciante com Sobrepeso',
+    subtitle: 'O primeiro passo é o mais importante',
+    description: 'Você tem gordura para perder e ainda não tem o hábito de treinar. A boa notícia é que iniciantes respondem muito bem aos primeiros estímulos — você verá resultados rápidos se seguir o protocolo.',
+    painPoints: [
+      'Nunca conseguiu manter uma rotina de exercícios',
+      'Desconforto ao se exercitar',
+      'Baixa disposição e energia',
+      'Medo de não conseguir acompanhar',
+    ],
+    solution: 'Você precisa de um protocolo progressivo que comece do zero, respeitando seus limites. O foco inicial é criar hábito e mobilidade, depois acelerar a queima de gordura.',
+    protocolName: 'Protocolo Iniciante 90D',
+  },
+  'skinny-sedentary': {
+    profile: 'skinny',
+    title: 'Magro em Fase de Construção',
+    subtitle: 'Hora de construir sua base muscular',
+    description: 'Você é magro e tem dificuldade para ganhar peso, mas ainda não tentou treinar de forma consistente. Seu corpo tem potencial, só precisa do estímulo certo.',
+    painPoints: [
+      'Nunca conseguiu criar rotina de treino',
+      'Não sabe por onde começar',
+      'Come pouco por falta de apetite',
+      'Metabolismo muito acelerado',
+    ],
+    solution: 'Você precisa de um protocolo focado em criar hábito alimentar e adaptação muscular. Com os estímulos certos, seu corpo vai começar a responder e você verá os primeiros ganhos.',
+    protocolName: 'Protocolo Construção 90D',
+  },
 };
 
 export function getResultProfile(answers: UserAnswers): QuizResult {
@@ -278,11 +398,13 @@ export function getResultProfile(answers: UserAnswers): QuizResult {
   const trainingTime = answers['training-time'];
   const frustration = answers['frustration'];
   
-  // REGRA 1: Usuários experientes (intermediário+) sem problemas = Perfil Athletic
+  // Determinar se é sedentário
+  const isSedentary = trainingTime === 'never' || trainingTime === 'beginner';
   const isExperienced = trainingTime === 'advanced' || trainingTime === 'intermediate';
   const hasNoIssues = frustration === 'no-issues';
   const isAthletic = bodyType === 'athletic';
   
+  // REGRA 1: Usuários experientes (intermediário+) sem problemas = Perfil Athletic
   if ((isExperienced && hasNoIssues) || (isAthletic && isExperienced)) {
     return profileResults['athletic'];
   }
@@ -292,7 +414,20 @@ export function getResultProfile(answers: UserAnswers): QuizResult {
     return profileResults['athletic'];
   }
   
-  // REGRA 3: Lógica original para outros perfis
+  // REGRA 3: Lógica para sedentários - usar perfis com sufixo -sedentary
+  if (isSedentary) {
+    if (bodyType === 'skinny-fat' && profileResults['skinny-fat-sedentary']) {
+      return profileResults['skinny-fat-sedentary'];
+    }
+    if (bodyType === 'overweight' && profileResults['overweight-sedentary']) {
+      return profileResults['overweight-sedentary'];
+    }
+    if (bodyType === 'skinny' && profileResults['skinny-sedentary']) {
+      return profileResults['skinny-sedentary'];
+    }
+  }
+  
+  // REGRA 4: Lógica original para usuários ativos
   if (bodyType === 'skinny-fat') {
     return profileResults['skinny-fat'];
   }
@@ -305,13 +440,13 @@ export function getResultProfile(answers: UserAnswers): QuizResult {
     return profileResults['skinny'];
   }
   
-  // REGRA 4: Fallback inteligente - experientes vão para athletic
+  // REGRA 5: Fallback inteligente - experientes vão para athletic
   if (isExperienced) {
     return profileResults['athletic'];
   }
   
-  // Default para falso magro (perfil mais comum para iniciantes)
-  return profileResults['skinny-fat'];
+  // Default para falso magro sedentário (perfil mais comum para iniciantes)
+  return profileResults['skinny-fat-sedentary'];
 }
 
 export const loadingMessages = [

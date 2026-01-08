@@ -32,9 +32,19 @@ export default function Resultado() {
   }, []);
 
   const profile = getResultProfile(answers);
+  
+  // Recuperar gênero das respostas
+  const userGender = answers['gender'] || 'male';
+  
+  // Filtrar transformações por gênero + perfil (apenas 1 transformação exibida)
   const relevantTransformations = transformations.filter(t => 
+    t.gender === userGender && 
     t.profiles.includes(answers['body-type'] || 'skinny-fat')
   );
+  
+  // Garantir apenas UMA transformação exibida
+  const displayedTransformation = relevantTransformations[0] || null;
+  
   const firstName = leadData?.name?.split(' ')[0] || 'Você';
 
   const handleMouseDown = () => {
@@ -154,7 +164,7 @@ export default function Resultado() {
             Transformações reais de alunos
           </h3>
 
-          {relevantTransformations.length > 0 && (
+          {displayedTransformation && (
             <div 
               ref={sliderRef}
               className="relative max-w-lg mx-auto aspect-[3/4] rounded-2xl overflow-hidden cursor-ew-resize select-none"
@@ -166,7 +176,7 @@ export default function Resultado() {
             >
               {/* After Image */}
               <img
-                src={relevantTransformations[0].afterImage}
+                src={displayedTransformation.afterImage}
                 alt="Depois"
                 className="absolute inset-0 w-full h-full object-cover"
               />
@@ -177,7 +187,7 @@ export default function Resultado() {
                 style={{ width: `${sliderPosition}%` }}
               >
                 <img
-                  src={relevantTransformations[0].beforeImage}
+                  src={displayedTransformation.beforeImage}
                   alt="Antes"
                   className="absolute inset-0 w-full h-full object-cover"
                   style={{ width: `${100 / (sliderPosition / 100)}%`, maxWidth: 'none' }}
@@ -206,11 +216,11 @@ export default function Resultado() {
           )}
 
           {/* Transformation Info */}
-          {relevantTransformations.length > 0 && (
+          {displayedTransformation && (
             <div className="text-center mt-6 max-w-lg mx-auto">
-              <p className="font-semibold">{relevantTransformations[0].name}, {relevantTransformations[0].age} anos</p>
-              <p className="text-sm text-muted-foreground">{relevantTransformations[0].description}</p>
-              <p className="text-sm text-primary mt-1">Resultado em {relevantTransformations[0].duration}</p>
+              <p className="font-semibold">{displayedTransformation.name}, {displayedTransformation.age} anos</p>
+              <p className="text-sm text-muted-foreground">{displayedTransformation.description}</p>
+              <p className="text-sm text-primary mt-1">Resultado em {displayedTransformation.duration}</p>
             </div>
           )}
         </div>
