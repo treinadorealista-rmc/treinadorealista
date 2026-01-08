@@ -12,14 +12,18 @@ import { getResultProfile, UserAnswers } from '@/lib/quizData';
 // Importar imagens de transformação
 import female1 from '@/assets/transformations/female-1.png';
 import female2 from '@/assets/transformations/female-2.png';
+import female3 from '@/assets/transformations/female-3.png';
+import female4 from '@/assets/transformations/female-4.png';
 import male1 from '@/assets/transformations/male-1.jpg';
 import male2 from '@/assets/transformations/male-2.jpg';
 
 const transformationImages = [
-  { image: female1, name: 'Andressa Teixeira', age: 35, duration: '12 semanas', gender: 'female' },
-  { image: male1, name: 'Bruno Pereira', age: 35, duration: '10 semanas', gender: 'male' },
-  { image: female2, name: 'Andressa Teixeira', age: 35, duration: '14 semanas', gender: 'female' },
-  { image: male2, name: 'Bruno Pereira', age: 35, duration: '12 semanas', gender: 'male' },
+  { image: female1, name: 'Andressa Teixeira', age: 35, gender: 'female' },
+  { image: female2, name: 'Andressa Teixeira', age: 35, gender: 'female' },
+  { image: female3, name: 'Camila Souza', age: 32, gender: 'female' },
+  { image: female4, name: 'Camila Souza', age: 32, gender: 'female' },
+  { image: male1, name: 'Bruno Pereira', age: 35, gender: 'male' },
+  { image: male2, name: 'Bruno Pereira', age: 35, gender: 'male' },
 ];
 
 export default function Resultado() {

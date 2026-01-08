@@ -25,10 +25,18 @@ export interface QuizResult {
   profile: string;
   title: string;
   titleFemale?: string;
+  titleFemale40?: string;
+  titleMale40?: string;
   subtitle: string;
+  subtitleFemale40?: string;
+  subtitleMale40?: string;
   whatItMeans: string;
+  whatItMeansFemale40?: string;
+  whatItMeansMale40?: string;
   whyMethodsFailed: string;
   rightPath: string[];
+  rightPathFemale40?: string[];
+  rightPathMale40?: string[];
   solution: string;
   protocolName: string;
   archetypeName: string;
@@ -233,18 +241,18 @@ export const transformations: Transformation[] = [
 ];
 
 export const profileResults: Record<string, QuizResult> = {
-  // PERFIL 1: Falso Magro / Iniciante (Alvo Principal)
+  // PERFIL 1: Falso Magro / Iniciante (Alvo Principal - Jovens)
   'iniciante': {
     profile: 'iniciante',
     title: 'Falso Magro em Fase de Adaptação',
     titleFemale: 'Falsa Magra em Fase de Adaptação',
     subtitle: 'Seu corpo ainda não responde bem a estímulos de treino.',
-    whatItMeans: 'Antes de avançar para protocolos intensos, você precisa de base e adaptação metabólica.',
-    whyMethodsFailed: 'Tentativa de pular etapas sem criar base. Falta de base muscular para acelerar o metabolismo.',
+    whatItMeans: 'Antes de avançar para protocolos intensos, você precisa de base e adaptação metabólica para alcançar definição muscular.',
+    whyMethodsFailed: 'Tentativa de pular etapas sem criar base. Falta de base muscular para acelerar o metabolismo e conquistar estética.',
     rightPath: [
       'Criar constância sem sobrecarga',
-      'Ativar o metabolismo gradualmente',
-      'Construir base muscular com progressão segura',
+      'Ativar o metabolismo para definição',
+      'Construir base muscular com ganho rápido e seguro',
     ],
     solution: 'Um plano que cria base primeiro e evolui conforme o seu corpo responde.',
     protocolName: 'Protocolo Adaptação 90D',
@@ -252,18 +260,18 @@ export const profileResults: Record<string, QuizResult> = {
     archetypeNameFemale: 'Falsa Magra em Fase de Adaptação',
     offerSubheadline: 'este sistema foi estruturado para criar sua base muscular do zero sem risco de lesão.',
   },
-  // PERFIL 2: Hardgainer / Platô (Público Ativo)
+  // PERFIL 2: Hardgainer / Platô (Público Ativo - Jovens)
   'hardgainer': {
     profile: 'hardgainer',
     title: 'Hardgainer com Metabolismo Acelerado',
     titleFemale: 'Hardgainer com Metabolismo Acelerado',
     subtitle: 'Você treina, come bem… e mesmo assim não cresce.',
-    whatItMeans: 'Seu corpo queima calorias com muita eficiência. Sem estímulos corretos, ele mantém o peso em vez de construir massa muscular.',
+    whatItMeans: 'Seu corpo queima calorias com muita eficiência. Sem estímulos corretos, ele mantém o peso em vez de construir massa muscular e definição.',
     whyMethodsFailed: 'Muito volume e pouca intensidade reforçam a estagnação. Treinos longos gastam energia que deveria virar músculo.',
     rightPath: [
       'Quebrar platô com sobrecarga progressiva',
-      'Priorizar exercícios compostos',
-      'Periodização estratégica para forçar novas adaptações',
+      'Maximizar definição e ganho muscular rápido',
+      'Periodização estratégica para estética',
     ],
     solution: 'Um plano que quebra a estagnação e força seu corpo a responder novamente.',
     protocolName: 'Protocolo Performance 90D',
@@ -271,29 +279,50 @@ export const profileResults: Record<string, QuizResult> = {
     archetypeNameFemale: 'Hardgainer com Metabolismo Acelerado',
     offerSubheadline: 'este sistema foi estruturado para forçar adaptação e ganho de massa sem desperdício de energia.',
   },
-  // PERFIL 3: Otimização Metabólica (Saúde 45+)
+  // PERFIL 3: Otimização Metabólica (Saúde 40+)
   'otimizacao': {
     profile: 'otimizacao',
-    title: 'Otimização Metabólica',
+    // === TEXTOS BASE (Masculino Jovem - fallback) ===
+    title: 'Otimização Metabólica e Longevidade',
     titleFemale: 'Otimização Metabólica',
     subtitle: 'Seu metabolismo pede ajuste fino na intensidade.',
-    whatItMeans: 'Seu metabolismo pede um ajuste fino na intensidade para queimar gordura sem gerar fadiga excessiva. Após os 45, a estratégia muda completamente.',
+    whatItMeans: 'Após os 40, a estratégia muda completamente. Foco em preservação de massa magra e saúde hormonal.',
     whyMethodsFailed: 'Treinos de alta intensidade geraram estresse excessivo e cortisol. Dietas muito restritivas desaceleraram ainda mais o metabolismo. Falta de foco em recuperação comprometeu os resultados.',
     rightPath: [
       'Intensidade ajustada para maximizar queima sem fadiga',
       'Foco em recuperação e qualidade do sono',
       'Estratégia anti-inflamatória para otimizar metabolismo',
     ],
+    // === HOMEM 40+ ===
+    titleMale40: 'Otimização Metabólica e Longevidade',
+    subtitleMale40: 'Manter testosterona natural e força funcional é prioridade agora.',
+    whatItMeansMale40: 'Após os 40, a manutenção de testosterona natural, força funcional e cuidado articular se tornam prioridades absolutas para resultados duradouros.',
+    rightPathMale40: [
+      'Manutenção de Testosterona Natural',
+      'Preservação de Força Funcional',
+      'Cuidado Articular e Recuperação Otimizada',
+    ],
+    // === MULHER 40+ ===
+    titleFemale40: 'Reativação Metabólica e Equilíbrio Hormonal',
+    subtitleFemale40: 'Seu corpo precisa de reativação metabólica e equilíbrio hormonal.',
+    whatItMeansFemale40: 'Após os 40, mudanças hormonais exigem uma abordagem focada em reativação metabólica e equilíbrio hormonal para resultados sustentáveis.',
+    rightPathFemale40: [
+      'Reativação Metabólica',
+      'Equilíbrio Hormonal',
+      'Preservação de Massa Magra com Segurança Articular',
+    ],
     solution: 'Um plano de otimização metabólica focado em saúde e longevidade.',
     protocolName: 'Protocolo Otimização 90D',
-    archetypeName: 'Otimização Metabólica',
-    archetypeNameFemale: 'Otimização Metabólica',
+    archetypeName: 'Otimização Metabólica e Longevidade',
+    archetypeNameFemale: 'Reativação Metabólica e Equilíbrio Hormonal',
     offerSubheadline: 'este sistema foi estruturado para queimar gordura e aumentar disposição respeitando os limites do seu corpo.',
   },
 };
 
 export function getResultProfile(answers: UserAnswers): QuizResult {
   const gender = answers['gender'];
+  const age = answers['age'];
+  const isOver40 = age === '45+' || age === '36-45';
   
   // === SISTEMA DE PONTUAÇÃO POR EIXOS ===
   const scores: ProfileScores = {
@@ -302,9 +331,9 @@ export function getResultProfile(answers: UserAnswers): QuizResult {
     otimizacao: 0,
   };
   
-  // === EIXO OTIMIZAÇÃO (40+/Saúde) ===
-  if (answers['age'] === '45+') scores.otimizacao += 3;
-  if (answers['age'] === '36-45') scores.otimizacao += 1;
+  // === EIXO OTIMIZAÇÃO (40+/Saúde) - PRIORIDADE ALTA ===
+  if (age === '45+') scores.otimizacao += 5;
+  if (age === '36-45') scores.otimizacao += 3;
   if (answers['goal'] === 'health') scores.otimizacao += 2;
   if (answers['goal'] === 'lose-fat') scores.otimizacao += 1;
   
@@ -325,24 +354,42 @@ export function getResultProfile(answers: UserAnswers): QuizResult {
   }
   
   // === DETERMINAR PERFIL DOMINANTE ===
-  // Prioridade de desempate: Otimização > Hardgainer > Adaptação
   let dominantProfile = 'iniciante';
-  let maxScore = scores.adaptacao;
   
-  if (scores.hardgainer > maxScore) {
-    dominantProfile = 'hardgainer';
-    maxScore = scores.hardgainer;
-  }
-  if (scores.otimizacao > maxScore) {
+  // REGRA 1: Idade 45+ OBRIGATORIAMENTE vai para otimização
+  if (age === '45+') {
     dominantProfile = 'otimizacao';
-    maxScore = scores.otimizacao;
+  } else if (age === '36-45' && (answers['goal'] === 'health' || answers['goal'] === 'lose-fat')) {
+    // 36-45 com foco em saúde/queima também vai para otimização
+    dominantProfile = 'otimizacao';
+  } else {
+    // Para <40 anos: Hardgainer ou Adaptação baseado em pontuação
+    let maxScore = scores.adaptacao;
+    if (scores.hardgainer > maxScore) {
+      dominantProfile = 'hardgainer';
+    }
   }
   
-  // === RETORNAR RESULTADO COM AJUSTE DE GÊNERO ===
+  // === RETORNAR RESULTADO COM AJUSTE DE GÊNERO E IDADE ===
   const baseResult = profileResults[dominantProfile];
   const result = { ...baseResult };
   
-  if (gender === 'female') {
+  if (isOver40 && dominantProfile === 'otimizacao') {
+    // Aplicar variantes específicas para 40+
+    if (gender === 'female') {
+      result.title = baseResult.titleFemale40 || baseResult.titleFemale || baseResult.title;
+      result.subtitle = baseResult.subtitleFemale40 || baseResult.subtitle;
+      result.whatItMeans = baseResult.whatItMeansFemale40 || baseResult.whatItMeans;
+      result.rightPath = baseResult.rightPathFemale40 || baseResult.rightPath;
+      result.archetypeName = baseResult.archetypeNameFemale || baseResult.archetypeName;
+    } else {
+      result.title = baseResult.titleMale40 || baseResult.title;
+      result.subtitle = baseResult.subtitleMale40 || baseResult.subtitle;
+      result.whatItMeans = baseResult.whatItMeansMale40 || baseResult.whatItMeans;
+      result.rightPath = baseResult.rightPathMale40 || baseResult.rightPath;
+    }
+  } else if (gender === 'female') {
+    // Aplicar variantes femininas para jovens
     result.title = baseResult.titleFemale || baseResult.title;
     result.archetypeName = baseResult.archetypeNameFemale || baseResult.archetypeName;
   }
