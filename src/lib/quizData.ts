@@ -24,6 +24,7 @@ export interface UserAnswers {
 export interface QuizResult {
   profile: string;
   title: string;
+  titleFemale?: string;
   subtitle: string;
   whatItMeans: string;
   whyMethodsFailed: string;
@@ -31,7 +32,14 @@ export interface QuizResult {
   solution: string;
   protocolName: string;
   archetypeName: string;
+  archetypeNameFemale?: string;
   offerSubheadline: string;
+}
+
+interface ProfileScores {
+  adaptacao: number;
+  hardgainer: number;
+  otimizacao: number;
 }
 
 export interface Transformation {
@@ -225,45 +233,50 @@ export const transformations: Transformation[] = [
 ];
 
 export const profileResults: Record<string, QuizResult> = {
-  // PERFIL 1: Falsa Magra / Iniciante (Alvo Principal)
+  // PERFIL 1: Falso Magro / Iniciante (Alvo Principal)
   'iniciante': {
     profile: 'iniciante',
-    title: 'Falsa Magra em Fase de Adaptação',
-    subtitle: 'Seu corpo precisa de uma base sólida antes de progredir',
-    whatItMeans: 'Seu corpo ainda não responde bem a estímulos intensos. Você precisa de base e adaptação metabólica antes de protocolos avançados.',
-    whyMethodsFailed: 'Treinos intensos demais causaram fadiga sem resultados. Dietas restritivas desaceleraram seu metabolismo. Sem adaptação neuromuscular, qualquer protocolo avançado seria ineficaz.',
+    title: 'Falso Magro em Fase de Adaptação',
+    titleFemale: 'Falsa Magra em Fase de Adaptação',
+    subtitle: 'Seu corpo ainda não responde bem a estímulos de treino.',
+    whatItMeans: 'Antes de avançar para protocolos intensos, você precisa de base e adaptação metabólica.',
+    whyMethodsFailed: 'Tentativa de pular etapas sem criar base. Falta de base muscular para acelerar o metabolismo.',
     rightPath: [
-      'Construção de base muscular com progressão controlada',
-      'Ativação metabólica gradual sem estresse excessivo',
-      'Criação de hábito sustentável antes de intensificar',
+      'Criar constância sem sobrecarga',
+      'Ativar o metabolismo gradualmente',
+      'Construir base muscular com progressão segura',
     ],
     solution: 'Um plano que cria base primeiro e evolui conforme o seu corpo responde.',
     protocolName: 'Protocolo Adaptação 90D',
-    archetypeName: 'Falsa Magra em Fase de Adaptação',
+    archetypeName: 'Falso Magro em Fase de Adaptação',
+    archetypeNameFemale: 'Falsa Magra em Fase de Adaptação',
     offerSubheadline: 'este sistema foi estruturado para criar sua base muscular do zero sem risco de lesão.',
   },
-  // PERFIL 2: Hardgainer / Estagnada (Público Ativo)
+  // PERFIL 2: Hardgainer / Platô (Público Ativo)
   'hardgainer': {
     profile: 'hardgainer',
     title: 'Hardgainer com Metabolismo Acelerado',
-    subtitle: 'Seu corpo estabilizou e parou de responder',
-    whatItMeans: 'Você treina e come bem, mas seu corpo estabilizou. O segredo é quebrar o platô com sobrecarga progressiva inteligente.',
-    whyMethodsFailed: 'Mesmos treinos por muito tempo causaram adaptação. Seu corpo parou de responder ao mesmo estímulo. Volume excessivo sem intensidade adequada não gera mais progresso.',
+    titleFemale: 'Hardgainer com Metabolismo Acelerado',
+    subtitle: 'Você treina, come bem… e mesmo assim não cresce.',
+    whatItMeans: 'Seu corpo queima calorias com muita eficiência. Sem estímulos corretos, ele mantém o peso em vez de construir massa muscular.',
+    whyMethodsFailed: 'Muito volume e pouca intensidade reforçam a estagnação. Treinos longos gastam energia que deveria virar músculo.',
     rightPath: [
-      'Quebra de platô com sobrecarga progressiva inteligente',
-      'Ajuste de intensidade para reativar o metabolismo',
+      'Quebrar platô com sobrecarga progressiva',
+      'Priorizar exercícios compostos',
       'Periodização estratégica para forçar novas adaptações',
     ],
     solution: 'Um plano que quebra a estagnação e força seu corpo a responder novamente.',
     protocolName: 'Protocolo Performance 90D',
     archetypeName: 'Hardgainer com Metabolismo Acelerado',
+    archetypeNameFemale: 'Hardgainer com Metabolismo Acelerado',
     offerSubheadline: 'este sistema foi estruturado para forçar adaptação e ganho de massa sem desperdício de energia.',
   },
-  // PERFIL 3: Perda de Peso / Inflamação (Saúde 45+)
+  // PERFIL 3: Otimização Metabólica (Saúde 45+)
   'otimizacao': {
     profile: 'otimizacao',
     title: 'Otimização Metabólica',
-    subtitle: 'Seu metabolismo pede ajuste fino na intensidade',
+    titleFemale: 'Otimização Metabólica',
+    subtitle: 'Seu metabolismo pede ajuste fino na intensidade.',
     whatItMeans: 'Seu metabolismo pede um ajuste fino na intensidade para queimar gordura sem gerar fadiga excessiva. Após os 45, a estratégia muda completamente.',
     whyMethodsFailed: 'Treinos de alta intensidade geraram estresse excessivo e cortisol. Dietas muito restritivas desaceleraram ainda mais o metabolismo. Falta de foco em recuperação comprometeu os resultados.',
     rightPath: [
@@ -274,46 +287,67 @@ export const profileResults: Record<string, QuizResult> = {
     solution: 'Um plano de otimização metabólica focado em saúde e longevidade.',
     protocolName: 'Protocolo Otimização 90D',
     archetypeName: 'Otimização Metabólica',
+    archetypeNameFemale: 'Otimização Metabólica',
     offerSubheadline: 'este sistema foi estruturado para queimar gordura e aumentar disposição respeitando os limites do seu corpo.',
   },
 };
 
 export function getResultProfile(answers: UserAnswers): QuizResult {
-  const trainingTime = answers['training-time'];
-  const frustration = answers['frustration'];
-  const goal = answers['goal'];
-  const age = answers['age'];
+  const gender = answers['gender'];
   
-  // Determinar se é sedentária
-  const isSedentary = trainingTime === 'never' || trainingTime === 'beginner';
+  // === SISTEMA DE PONTUAÇÃO POR EIXOS ===
+  const scores: ProfileScores = {
+    adaptacao: 0,
+    hardgainer: 0,
+    otimizacao: 0,
+  };
   
-  // Determinar se treina ativamente (3x+ por semana)
-  const isActive = trainingTime === 'intermediate' || trainingTime === 'advanced';
+  // === EIXO OTIMIZAÇÃO (40+/Saúde) ===
+  if (answers['age'] === '45+') scores.otimizacao += 3;
+  if (answers['age'] === '36-45') scores.otimizacao += 1;
+  if (answers['goal'] === 'health') scores.otimizacao += 2;
+  if (answers['goal'] === 'lose-fat') scores.otimizacao += 1;
   
-  // Determinar se não vê resultados
-  const noResults = frustration === 'no-results';
+  // === EIXO ADAPTAÇÃO (Iniciante/Sedentário) ===
+  if (answers['training-time'] === 'never') scores.adaptacao += 3;
+  if (answers['training-time'] === 'beginner') scores.adaptacao += 2;
+  if (answers['body-type'] === 'skinny-fat') scores.adaptacao += 1;
+  if (answers['frustration'] === 'no-knowledge') scores.adaptacao += 1;
+  if (answers['frustration'] === 'no-motivation') scores.adaptacao += 1;
   
-  // Determinar se foco é perda de peso/saúde e 45+
-  const isOver45 = age === '45+';
-  const wantsWeightLoss = goal === 'lose-fat' || goal === 'health';
-  
-  // ===== REGRAS DE GATILHO =====
-  
-  // PERFIL 3: Otimização Metabólica
-  // Gatilho: Foco em queima de gordura OU saúde + 45+ anos
-  if (wantsWeightLoss && isOver45) {
-    return profileResults['otimizacao'];
+  // === EIXO HARDGAINER (Platô/Estagnação) ===
+  if (answers['training-time'] === 'intermediate') scores.hardgainer += 2;
+  if (answers['training-time'] === 'advanced') scores.hardgainer += 2;
+  if (answers['frustration'] === 'no-results') scores.hardgainer += 3;
+  if (answers['body-type'] === 'athletic') scores.hardgainer += 1;
+  if (answers['commitment'] === '5-6' || answers['commitment'] === 'everyday') {
+    scores.hardgainer += 1;
   }
   
-  // PERFIL 2: Hardgainer / Platô Metabólico
-  // Gatilho: Treina ativamente + não vê mudança
-  if (isActive && noResults) {
-    return profileResults['hardgainer'];
+  // === DETERMINAR PERFIL DOMINANTE ===
+  // Prioridade de desempate: Otimização > Hardgainer > Adaptação
+  let dominantProfile = 'iniciante';
+  let maxScore = scores.adaptacao;
+  
+  if (scores.hardgainer > maxScore) {
+    dominantProfile = 'hardgainer';
+    maxScore = scores.hardgainer;
+  }
+  if (scores.otimizacao > maxScore) {
+    dominantProfile = 'otimizacao';
+    maxScore = scores.otimizacao;
   }
   
-  // PERFIL 1: Falsa Magra / Iniciante (DEFAULT)
-  // Gatilho: Sedentária ou pouco ativa (fallback para todos os outros casos)
-  return profileResults['iniciante'];
+  // === RETORNAR RESULTADO COM AJUSTE DE GÊNERO ===
+  const baseResult = profileResults[dominantProfile];
+  const result = { ...baseResult };
+  
+  if (gender === 'female') {
+    result.title = baseResult.titleFemale || baseResult.title;
+    result.archetypeName = baseResult.archetypeNameFemale || baseResult.archetypeName;
+  }
+  
+  return result;
 }
 
 export const loadingMessages = [

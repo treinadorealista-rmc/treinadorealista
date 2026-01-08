@@ -132,20 +132,22 @@ export default function Resultado() {
           </h3>
 
           <div className="space-y-8 max-w-2xl mx-auto">
-            {transformationImages.map((transformation, index) => (
-              <div key={index} className="space-y-3">
-                <div className="relative rounded-2xl overflow-hidden">
-                  <img
-                    src={transformation.image}
-                    alt={`Transformação de ${transformation.name}`}
-                    className="w-full h-auto object-cover"
-                  />
+            {transformationImages
+              .filter(t => t.gender === answers['gender'])
+              .map((transformation, index) => (
+                <div key={index} className="space-y-3">
+                  <div className="relative rounded-2xl overflow-hidden">
+                    <img
+                      src={transformation.image}
+                      alt={`Transformação de ${transformation.name}`}
+                      className="w-full h-auto object-cover"
+                    />
+                  </div>
+                  <div className="text-center">
+                    <p className="font-semibold">{transformation.name}, {transformation.age} anos</p>
+                  </div>
                 </div>
-                <div className="text-center">
-                  <p className="font-semibold">{transformation.name}, {transformation.age} anos</p>
-                </div>
-              </div>
-            ))}
+              ))}
           </div>
         </div>
       </section>
@@ -163,7 +165,10 @@ export default function Resultado() {
             <Button 
               size="lg" 
               className="text-lg px-10 gap-2 bg-green-600 hover:bg-green-700"
-              onClick={() => navigate('/oferta')}
+              onClick={() => {
+                window.scrollTo(0, 0);
+                navigate('/oferta');
+              }}
             >
               Ver Meu Protocolo Personalizado
               <ArrowRight className="w-5 h-5" />
