@@ -57,6 +57,19 @@ export const quizQuestions: QuizQuestion[] = [
     ],
   },
   {
+    id: 'age',
+    phase: 'diagnosis',
+    question: 'Qual é a sua faixa etária?',
+    subtitle: 'Seu metabolismo muda com a idade',
+    type: 'multiple',
+    options: [
+      { id: '18-25', label: '18 a 25 anos', icon: '🔥' },
+      { id: '26-35', label: '26 a 35 anos', icon: '💪' },
+      { id: '36-45', label: '36 a 45 anos', icon: '⚡' },
+      { id: '45+', label: 'Acima de 45 anos', icon: '🎯' },
+    ],
+  },
+  {
     id: 'goal',
     phase: 'diagnosis',
     question: 'Qual seu principal objetivo hoje?',
@@ -209,163 +222,121 @@ export const transformations: Transformation[] = [
   },
 ];
 
+// 6 Profiles (3 per gender)
 export const profileResults: Record<string, QuizResult> = {
-  // Perfis para usuários ATIVOS (treina há algum tempo)
-  'skinny-fat': {
-    profile: 'skinny-fat',
-    title: 'Falso Magro com Resistência Metabólica',
-    subtitle: 'Seu metabolismo está trabalhando contra você',
-    whatItMeans: 'Você treina mas a gordura localizada persiste. Seu corpo desenvolveu resistência metabólica por treinos mal estruturados ou excesso de cardio que aumentou cortisol.',
-    whyMethodsFailed: 'Cardio excessivo aumentou cortisol e catabolismo. Dietas muito restritivas desaceleraram seu metabolismo. Treinos genéricos não criaram o estímulo certo para recomposição corporal.',
+  // SEDENTARY PROFILES
+  'sedentary-female': {
+    profile: 'sedentary',
+    title: 'Falsa Magra em Fase de Adaptação',
+    subtitle: 'Seu corpo precisa despertar antes de evoluir',
+    whatItMeans: 'Seu corpo ainda não desenvolveu a base necessária para responder aos estímulos. Sem ativação metabólica prévia, qualquer dieta ou treino genérico falha. Você acumula gordura localizada mesmo parecendo magra na balança.',
+    whyMethodsFailed: 'Você tentou atalhos que exigem uma base que ainda não existe. Seu metabolismo está adormecido e precisa ser ativado gradualmente, não forçado. Dietas restritivas apenas desaceleraram ainda mais seu metabolismo.',
     rightPath: [
-      'Quebra de platô com periodização inteligente',
-      'Ajuste de intensidade para reativar metabolismo',
-      'Protocolo de recomposição corporal específico para falso magro',
-    ],
-    solution: 'Um plano que quebra a estagnação e força seu corpo a responder novamente.',
-    protocolName: 'Protocolo Recomposição 90D',
-  },
-  'overweight': {
-    profile: 'overweight',
-    title: 'Perfil Resistente com Estagnação',
-    subtitle: 'Seu corpo parou de responder aos estímulos',
-    whatItMeans: 'Você treina mas os resultados estagnaram. Seu metabolismo adaptou-se ao mesmo estímulo repetido e parou de progredir, entrando em modo de preservação.',
-    whyMethodsFailed: 'Mesmos treinos por muito tempo causaram adaptação negativa. Déficit calórico excessivo reduziu sua taxa metabólica. Faltou variação estratégica de estímulos.',
-    rightPath: [
-      'Quebra de platô com novos estímulos metabólicos',
-      'Ajuste de intensidade e volume de treino',
-      'Estratégia nutricional para reativar queima de gordura',
-    ],
-    solution: 'Um plano que quebra a estagnação e força seu corpo a responder novamente.',
-    protocolName: 'Protocolo Queima Avançada 90D',
-  },
-  'skinny': {
-    profile: 'skinny',
-    title: 'Hardgainer com Metabolismo Acelerado',
-    subtitle: 'Seu corpo queima tudo que você come',
-    whatItMeans: 'Você treina mas ganha massa muito devagar. Seu metabolismo é extremamente eficiente em queimar calorias e precisa de sobrecarga estratégica para construir músculo.',
-    whyMethodsFailed: 'Treinos longos queimaram calorias que deveriam construir músculo. Volume excessivo sem intensidade adequada. Faltou periodização para maximizar ganhos de massa.',
-    rightPath: [
-      'Quebra de platô com sobrecarga progressiva inteligente',
-      'Ajuste de intensidade com menos volume e mais peso',
-      'Foco em exercícios compostos e recuperação adequada',
-    ],
-    solution: 'Um plano que quebra a estagnação e força seu corpo a responder novamente.',
-    protocolName: 'Protocolo Massa Máxima 90D',
-  },
-  'athletic': {
-    profile: 'athletic',
-    title: 'Atleta em Fase de Otimização',
-    subtitle: 'Você já está no caminho certo',
-    whatItMeans: 'Seu corpo responde bem aos estímulos. Você tem base sólida e agora precisa de refinamento para alcançar o próximo nível de performance e estética.',
-    whyMethodsFailed: 'Treinos genéricos não consideram sua individualidade avançada. Falta de periodização específica limita ganhos. Recuperação e nutrição podem estar subotimizadas.',
-    rightPath: [
-      'Periodização avançada para maximizar performance',
-      'Otimização de recuperação e nutrição de alto nível',
-      'Refinamento técnico para eficiência máxima',
-    ],
-    solution: 'Um plano de otimização avançada construído sobre sua base sólida.',
-    protocolName: 'Protocolo Performance 90D',
-  },
-  // Perfis para usuários SEDENTÁRIOS (nunca treinou ou < 1 ano)
-  'skinny-fat-sedentary': {
-    profile: 'skinny-fat',
-    title: 'Falso Magro em Fase de Adaptação',
-    subtitle: 'Seu corpo precisa de uma base antes de progredir',
-    whatItMeans: 'Você acumula gordura localizada mesmo sendo magro na balança. Sem experiência com treinos, seu corpo está desacostumado a estímulos e seu metabolismo está lento por falta de ativação.',
-    whyMethodsFailed: 'Dietas restritivas apenas reduziram seu metabolismo ainda mais. Treinos genéricos da internet não criaram adaptação neuromuscular. Sem base, qualquer protocolo avançado seria ineficaz.',
-    rightPath: [
-      'Construção de base muscular com progressão controlada',
-      'Ativação metabólica gradual sem estresse excessivo',
-      'Criação de hábito sustentável antes de intensificar',
+      'Ativação metabólica do zero com progressão segura',
+      'Construção de base muscular antes de intensificar',
+      'Criação de hábitos sustentáveis que geram constância'
     ],
     solution: 'Um plano que cria base primeiro e evolui conforme o seu corpo responde.',
     protocolName: 'Protocolo Adaptação 90D',
   },
-  'overweight-sedentary': {
-    profile: 'overweight',
-    title: 'Perfil Iniciante com Sobrepeso',
-    subtitle: 'O primeiro passo é o mais importante',
-    whatItMeans: 'Você tem gordura para perder e ainda não criou o hábito de treinar. Seu corpo está resistente por anos sem estímulo adequado, mas iniciantes respondem muito bem aos primeiros estímulos.',
-    whyMethodsFailed: 'Dietas radicais causaram efeito sanfona e desaceleraram metabolismo. Treinos muito intensos geraram desconforto e abandono. Faltou progressão adequada para seu nível atual.',
+  'sedentary-male': {
+    profile: 'sedentary',
+    title: 'Falso Magro em Fase de Adaptação',
+    subtitle: 'Seu corpo precisa despertar antes de evoluir',
+    whatItMeans: 'Seu corpo ainda não desenvolveu a base necessária para responder aos estímulos. Sem ativação metabólica prévia, qualquer dieta ou treino genérico falha. Você acumula gordura localizada mesmo parecendo magro na balança.',
+    whyMethodsFailed: 'Você tentou atalhos que exigem uma base que ainda não existe. Seu metabolismo está adormecido e precisa ser ativado gradualmente, não forçado. Dietas restritivas apenas desaceleraram ainda mais seu metabolismo.',
     rightPath: [
-      'Construção de base com exercícios adaptados ao seu nível',
-      'Progressão gradual que respeita seus limites',
-      'Foco em mobilidade e criação de hábito antes de intensidade',
+      'Ativação metabólica do zero com progressão segura',
+      'Construção de base muscular antes de intensificar',
+      'Criação de hábitos sustentáveis que geram constância'
     ],
     solution: 'Um plano que cria base primeiro e evolui conforme o seu corpo responde.',
-    protocolName: 'Protocolo Iniciante 90D',
+    protocolName: 'Protocolo Adaptação 90D',
   },
-  'skinny-sedentary': {
-    profile: 'skinny',
-    title: 'Magro em Fase de Construção',
-    subtitle: 'Hora de construir sua base muscular',
-    whatItMeans: 'Seu metabolismo acelerado queima tudo rapidamente. Sem estímulo de treino consistente, seu corpo não teve motivo para construir massa muscular e você permanece magro.',
-    whyMethodsFailed: 'Comer mais sem treinar adequadamente só gerou desconforto. Treinos genéricos não criaram sobrecarga progressiva necessária. Faltou estratégia específica para hardgainers iniciantes.',
+
+  // HARDGAINER/ACTIVE PROFILES
+  'hardgainer-female': {
+    profile: 'hardgainer',
+    title: 'Hardgainer com Metabolismo Acelerado',
+    subtitle: 'Seu corpo estagnou e precisa de um novo estímulo',
+    whatItMeans: 'Você treina mas seu corpo estagnou. Seu metabolismo adaptou-se ao mesmo estímulo repetido e parou de responder. Fazer mais do mesmo não vai quebrar esse platô.',
+    whyMethodsFailed: 'Faltou variação estratégica de estímulos para quebrar a estagnação. Seu corpo ficou eficiente demais no que você fazia, e agora precisa de periodização inteligente para voltar a evoluir.',
     rightPath: [
-      'Construção de base com foco em força fundamental',
-      'Estratégia alimentar para suportar ganho de massa',
-      'Treinos curtos e intensos que maximizam estímulo muscular',
+      'Quebra de platô com periodização inteligente',
+      'Ajuste de intensidade para reativar o metabolismo',
+      'Estratégia de sobrecarga progressiva personalizada'
     ],
-    solution: 'Um plano que cria base primeiro e evolui conforme o seu corpo responde.',
-    protocolName: 'Protocolo Construção 90D',
+    solution: 'Um plano que quebra a estagnação e força seu corpo a responder novamente.',
+    protocolName: 'Protocolo Evolução 90D',
+  },
+  'hardgainer-male': {
+    profile: 'hardgainer',
+    title: 'Hardgainer com Metabolismo Acelerado',
+    subtitle: 'Seu corpo estagnou e precisa de um novo estímulo',
+    whatItMeans: 'Você treina mas seu corpo estagnou. Seu metabolismo adaptou-se ao mesmo estímulo repetido e parou de responder. Fazer mais do mesmo não vai quebrar esse platô.',
+    whyMethodsFailed: 'Faltou variação estratégica de estímulos para quebrar a estagnação. Seu corpo ficou eficiente demais no que você fazia, e agora precisa de periodização inteligente para voltar a evoluir.',
+    rightPath: [
+      'Quebra de platô com periodização inteligente',
+      'Ajuste de intensidade para reativar o metabolismo',
+      'Estratégia de sobrecarga progressiva personalizada'
+    ],
+    solution: 'Um plano que quebra a estagnação e força seu corpo a responder novamente.',
+    protocolName: 'Protocolo Evolução 90D',
+  },
+
+  // 45+ PROFILES
+  '45plus-female': {
+    profile: '45plus',
+    title: 'Perfil de Otimização Metabólica 45+',
+    subtitle: 'Seu corpo maduro precisa de estratégia, não de força bruta',
+    whatItMeans: 'Após os 45, seu metabolismo naturalmente desacelera e a perda de massa muscular acelera. Mudanças hormonais afetam como seu corpo responde aos estímulos. Você precisa de um protocolo inteligente, não genérico.',
+    whyMethodsFailed: 'Métodos genéricos ignoram as necessidades específicas do seu corpo maduro. Treinos muito intensos podem causar lesões e dietas radicais prejudicam seu equilíbrio hormonal.',
+    rightPath: [
+      'Otimização metabólica respeitando suas limitações',
+      'Foco em saúde articular e longevidade',
+      'Protocolo adaptado para maximizar resultados com segurança'
+    ],
+    solution: 'Um plano de otimização avançada construído para seu momento de vida.',
+    protocolName: 'Protocolo Longevidade 90D',
+  },
+  '45plus-male': {
+    profile: '45plus',
+    title: 'Perfil de Otimização Metabólica 45+',
+    subtitle: 'Seu corpo maduro precisa de estratégia, não de força bruta',
+    whatItMeans: 'Após os 45, seu metabolismo naturalmente desacelera e a perda de massa muscular acelera. Mudanças hormonais afetam como seu corpo responde aos estímulos. Você precisa de um protocolo inteligente, não genérico.',
+    whyMethodsFailed: 'Métodos genéricos ignoram as necessidades específicas do seu corpo maduro. Treinos muito intensos podem causar lesões e dietas radicais prejudicam seu equilíbrio hormonal.',
+    rightPath: [
+      'Otimização metabólica respeitando suas limitações',
+      'Foco em saúde articular e longevidade',
+      'Protocolo adaptado para maximizar resultados com segurança'
+    ],
+    solution: 'Um plano de otimização avançada construído para seu momento de vida.',
+    protocolName: 'Protocolo Longevidade 90D',
   },
 };
 
+// Get Result Profile based on answers
 export function getResultProfile(answers: UserAnswers): QuizResult {
-  const bodyType = answers['body-type'];
+  const gender = answers['gender'] || 'male';
+  const age = answers['age'];
   const trainingTime = answers['training-time'];
-  const frustration = answers['frustration'];
   
-  // Determinar se é sedentário
+  const isFemale = gender === 'female';
+  const is45Plus = age === '45+';
   const isSedentary = trainingTime === 'never' || trainingTime === 'beginner';
-  const isExperienced = trainingTime === 'advanced' || trainingTime === 'intermediate';
-  const hasNoIssues = frustration === 'no-issues';
-  const isAthletic = bodyType === 'athletic';
   
-  // REGRA 1: Usuários experientes (intermediário+) sem problemas = Perfil Athletic
-  if ((isExperienced && hasNoIssues) || (isAthletic && isExperienced)) {
-    return profileResults['athletic'];
+  // RULE 1: 45+ profile has priority
+  if (is45Plus) {
+    return isFemale ? profileResults['45plus-female'] : profileResults['45plus-male'];
   }
   
-  // REGRA 2: Tipo atlético = Athletic (mesmo sem muita experiência)
-  if (isAthletic) {
-    return profileResults['athletic'];
-  }
-  
-  // REGRA 3: Lógica para sedentários - usar perfis com sufixo -sedentary
+  // RULE 2: Sedentary
   if (isSedentary) {
-    if (bodyType === 'skinny-fat' && profileResults['skinny-fat-sedentary']) {
-      return profileResults['skinny-fat-sedentary'];
-    }
-    if (bodyType === 'overweight' && profileResults['overweight-sedentary']) {
-      return profileResults['overweight-sedentary'];
-    }
-    if (bodyType === 'skinny' && profileResults['skinny-sedentary']) {
-      return profileResults['skinny-sedentary'];
-    }
+    return isFemale ? profileResults['sedentary-female'] : profileResults['sedentary-male'];
   }
   
-  // REGRA 4: Lógica original para usuários ativos
-  if (bodyType === 'skinny-fat') {
-    return profileResults['skinny-fat'];
-  }
-  
-  if (bodyType === 'overweight') {
-    return profileResults['overweight'];
-  }
-  
-  if (bodyType === 'skinny') {
-    return profileResults['skinny'];
-  }
-  
-  // REGRA 5: Fallback inteligente - experientes vão para athletic
-  if (isExperienced) {
-    return profileResults['athletic'];
-  }
-  
-  // Default para falso magro sedentário (perfil mais comum para iniciantes)
-  return profileResults['skinny-fat-sedentary'];
+  // RULE 3: Active (Hardgainer)
+  return isFemale ? profileResults['hardgainer-female'] : profileResults['hardgainer-male'];
 }
 
 export const loadingMessages = [
