@@ -241,6 +241,25 @@ export const transformations: Transformation[] = [
 ];
 
 export const profileResults: Record<string, QuizResult> = {
+  // PERFIL 0: Metabolismo Lento e Inflamado (Sobrepeso - Prioridade Máxima)
+  'sobrepeso': {
+    profile: 'sobrepeso',
+    title: 'Metabolismo Lento e Inflamado',
+    titleFemale: 'Metabolismo Lento e Inflamado',
+    subtitle: 'Seu corpo está em modo de estocagem.',
+    whatItMeans: 'Seu metabolismo está desacelerado e inflamado. Dietas restritivas e cardio em excesso só pioram a situação, pois aumentam cortisol e mantêm seu corpo em modo de sobrevivência.',
+    whyMethodsFailed: 'Estratégias genéricas focam em cortar calorias, mas seu corpo precisa de reativação metabólica primeiro. Sem isso, qualquer dieta gera efeito rebote.',
+    rightPath: [
+      'Reativar metabolismo com treinos anti-inflamatórios',
+      'Reduzir cortisol e estresse crônico',
+      'Criar déficit calórico inteligente sem privar o corpo',
+    ],
+    solution: 'Um plano de reativação metabólica que prioriza queima de gordura sem inflamação.',
+    protocolName: 'Protocolo Reativação 90D',
+    archetypeName: 'Metabolismo Lento e Inflamado',
+    archetypeNameFemale: 'Metabolismo Lento e Inflamado',
+    offerSubheadline: 'este sistema foi estruturado para reativar seu metabolismo e queimar gordura de forma sustentável.',
+  },
   // PERFIL 1: Falso Magro / Iniciante (Alvo Principal - Jovens)
   'iniciante': {
     profile: 'iniciante',
@@ -322,54 +341,29 @@ export const profileResults: Record<string, QuizResult> = {
 export function getResultProfile(answers: UserAnswers): QuizResult {
   const gender = answers['gender'];
   const age = answers['age'];
+  const bodyType = answers['body-type'];
+  const trainingTime = answers['training-time'];
+  
   const isOver40 = age === '45+' || age === '36-45';
-  
-  // === SISTEMA DE PONTUAÇÃO POR EIXOS ===
-  const scores: ProfileScores = {
-    adaptacao: 0,
-    hardgainer: 0,
-    otimizacao: 0,
-  };
-  
-  // === EIXO OTIMIZAÇÃO (40+/Saúde) - PRIORIDADE ALTA ===
-  if (age === '45+') scores.otimizacao += 5;
-  if (age === '36-45') scores.otimizacao += 3;
-  if (answers['goal'] === 'health') scores.otimizacao += 2;
-  if (answers['goal'] === 'lose-fat') scores.otimizacao += 1;
-  
-  // === EIXO ADAPTAÇÃO (Iniciante/Sedentário) ===
-  if (answers['training-time'] === 'never') scores.adaptacao += 3;
-  if (answers['training-time'] === 'beginner') scores.adaptacao += 2;
-  if (answers['body-type'] === 'skinny-fat') scores.adaptacao += 1;
-  if (answers['frustration'] === 'no-knowledge') scores.adaptacao += 1;
-  if (answers['frustration'] === 'no-motivation') scores.adaptacao += 1;
-  
-  // === EIXO HARDGAINER (Platô/Estagnação) ===
-  if (answers['training-time'] === 'intermediate') scores.hardgainer += 2;
-  if (answers['training-time'] === 'advanced') scores.hardgainer += 2;
-  if (answers['frustration'] === 'no-results') scores.hardgainer += 3;
-  if (answers['body-type'] === 'athletic') scores.hardgainer += 1;
-  if (answers['commitment'] === '5-6' || answers['commitment'] === 'everyday') {
-    scores.hardgainer += 1;
+  let dominantProfile: string;
+
+  // === FILTRO 1: SOBREPESO (Prioridade Máxima) ===
+  if (bodyType === 'overweight') {
+    dominantProfile = 'sobrepeso';
   }
-  
-  // === DETERMINAR PERFIL DOMINANTE ===
-  let dominantProfile = 'iniciante';
-  
-  // REGRA 1: Idade 45+ OBRIGATORIAMENTE vai para otimização
-  if (age === '45+') {
+  // === FILTRO 2: IDADE 40+ ===
+  else if (isOver40) {
     dominantProfile = 'otimizacao';
-  } else if (age === '36-45' && (answers['goal'] === 'health' || answers['goal'] === 'lose-fat')) {
-    // 36-45 com foco em saúde/queima também vai para otimização
-    dominantProfile = 'otimizacao';
-  } else {
-    // Para <40 anos: Hardgainer ou Adaptação baseado em pontuação
-    let maxScore = scores.adaptacao;
-    if (scores.hardgainer > maxScore) {
-      dominantProfile = 'hardgainer';
-    }
   }
-  
+  // === FILTRO 3: SEDENTÁRIO ===
+  else if (trainingTime === 'never' || trainingTime === 'beginner') {
+    dominantProfile = 'iniciante';
+  }
+  // === FILTRO 4: ATIVO MAGRO (Fallback) ===
+  else {
+    dominantProfile = 'hardgainer';
+  }
+
   // === RETORNAR RESULTADO COM AJUSTE DE GÊNERO E IDADE ===
   const baseResult = profileResults[dominantProfile];
   const result = { ...baseResult };
