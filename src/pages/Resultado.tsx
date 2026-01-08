@@ -1,22 +1,18 @@
 import { useEffect, useState, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { 
-  CheckCircle2, 
   AlertTriangle, 
   Target, 
   Zap, 
-  Shield, 
-  Star,
-  Clock,
-  Users,
-  Award,
   ChevronLeft,
-  ChevronRight
+  ChevronRight,
+  ArrowRight
 } from 'lucide-react';
-import { getResultProfile, UserAnswers, transformations, offerData } from '@/lib/quizData';
-import { cn } from '@/lib/utils';
+import { getResultProfile, UserAnswers, transformations } from '@/lib/quizData';
 
 export default function Resultado() {
+  const navigate = useNavigate();
   const [answers, setAnswers] = useState<UserAnswers>({});
   const [leadData, setLeadData] = useState<{ name: string } | null>(null);
   const [sliderPosition, setSliderPosition] = useState(50);
@@ -220,128 +216,24 @@ export default function Resultado() {
         </div>
       </section>
 
-      {/* Offer Section */}
+      {/* CTA Section */}
       <section className="py-12 bg-card border-t border-border">
         <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto">
-            <h3 className="text-2xl md:text-3xl font-bold text-center mb-4">
-              Seu protocolo personalizado
+          <div className="max-w-2xl mx-auto text-center">
+            <h3 className="text-2xl md:text-3xl font-bold mb-4">
+              Pronto para sua transformação?
             </h3>
-            <p className="text-center text-muted-foreground mb-10">
-              Baseado no seu diagnóstico, recomendamos o seguinte caminho:
+            <p className="text-muted-foreground mb-8">
+              Agora que você conhece seu diagnóstico, veja a solução personalizada que preparamos para o seu perfil.
             </p>
-
-            {/* Offer Cards */}
-            <div className="grid md:grid-cols-3 gap-6 mb-10">
-              {/* Consultoria Presencial */}
-              <div className="relative p-6 bg-background border border-border rounded-2xl opacity-60">
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 bg-muted text-muted-foreground text-xs font-medium rounded-full">
-                  Esgotado
-                </div>
-                <h4 className="font-bold mb-2">Consultoria Presencial</h4>
-                <p className="text-3xl font-black line-through text-muted-foreground mb-4">
-                  R$ 500
-                </p>
-                <ul className="space-y-2 text-sm text-muted-foreground">
-                  <li className="flex items-center gap-2">
-                    <Clock className="w-4 h-4" />
-                    Lista de espera: 3 meses
-                  </li>
-                </ul>
-              </div>
-
-              {/* Consultoria Online */}
-              <div className="relative p-6 bg-background border border-border rounded-2xl opacity-60">
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 bg-muted text-muted-foreground text-xs font-medium rounded-full">
-                  Lista de espera
-                </div>
-                <h4 className="font-bold mb-2">Consultoria Online</h4>
-                <p className="text-3xl font-black line-through text-muted-foreground mb-4">
-                  R$ {offerData.originalPrice}
-                </p>
-                <ul className="space-y-2 text-sm text-muted-foreground">
-                  <li className="flex items-center gap-2">
-                    <Users className="w-4 h-4" />
-                    Vagas limitadas por mês
-                  </li>
-                </ul>
-              </div>
-
-              {/* Protocolo RaonyPro */}
-              <div className="relative p-6 bg-primary/5 border-2 border-primary rounded-2xl">
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 bg-primary text-primary-foreground text-xs font-medium rounded-full">
-                  Recomendado
-                </div>
-                <h4 className="font-bold mb-2">{profile.protocolName}</h4>
-                <div className="mb-4">
-                  <span className="text-sm text-muted-foreground line-through">R$ {offerData.originalPrice}</span>
-                  <p className="text-3xl font-black text-primary">
-                    R$ {offerData.discountPrice.toFixed(2).replace('.', ',')}
-                  </p>
-                  <p className="text-xs text-muted-foreground">
-                    ou {offerData.installments}x de R$ {offerData.installmentPrice.toFixed(2).replace('.', ',')}
-                  </p>
-                </div>
-                <ul className="space-y-2 text-sm">
-                  <li className="flex items-center gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-primary" />
-                    Acesso imediato
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-primary" />
-                    Garantia de 7 dias
-                  </li>
-                </ul>
-              </div>
-            </div>
-
-            {/* Benefits List */}
-            <div className="bg-background border border-border rounded-2xl p-6 mb-8">
-              <h4 className="font-bold text-lg mb-4 text-center">O que está incluído:</h4>
-              <div className="grid md:grid-cols-2 gap-3">
-                {[
-                  'Treinos personalizados para seu biotipo',
-                  'Plano alimentar sem dietas restritivas',
-                  'Suplementação estratégica (opcional)',
-                  'Acompanhamento de evolução',
-                  'Comunidade exclusiva de alunos',
-                  'Suporte via WhatsApp',
-                  'Atualizações mensais do protocolo',
-                  'Bônus: Guia de receitas rápidas',
-                ].map((benefit, index) => (
-                  <div key={index} className="flex items-center gap-3">
-                    <CheckCircle2 className="w-5 h-5 text-primary flex-shrink-0" />
-                    <span className="text-sm">{benefit}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" className="text-lg px-10">
-                Começar Agora
-              </Button>
-              <Button size="lg" variant="outline" className="text-lg px-10">
-                Garantir Meu Protocolo
-              </Button>
-            </div>
-
-            {/* Trust Badges */}
-            <div className="flex flex-wrap justify-center gap-6 mt-8">
-              <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                <Shield className="w-5 h-5 text-primary" />
-                <span>Compra segura</span>
-              </div>
-              <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                <Award className="w-5 h-5 text-primary" />
-                <span>Garantia de 7 dias</span>
-              </div>
-              <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                <Star className="w-5 h-5 text-primary fill-primary" />
-                <span>4.9/5.0 avaliação</span>
-              </div>
-            </div>
+            <Button 
+              size="lg" 
+              className="text-lg px-10 gap-2"
+              onClick={() => navigate('/oferta')}
+            >
+              Ver Meu Protocolo Personalizado
+              <ArrowRight className="w-5 h-5" />
+            </Button>
           </div>
         </div>
       </section>
