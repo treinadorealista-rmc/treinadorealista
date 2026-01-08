@@ -7,7 +7,20 @@ import {
   Zap, 
   ArrowRight
 } from 'lucide-react';
-import { getResultProfile, UserAnswers, transformations } from '@/lib/quizData';
+import { getResultProfile, UserAnswers } from '@/lib/quizData';
+
+// Importar imagens de transformação
+import female1 from '@/assets/transformations/female-1.png';
+import female2 from '@/assets/transformations/female-2.png';
+import male1 from '@/assets/transformations/male-1.jpg';
+import male2 from '@/assets/transformations/male-2.jpg';
+
+const transformationImages = [
+  { image: female1, name: 'Fernanda M.', age: 28, duration: '12 semanas', gender: 'female' },
+  { image: male1, name: 'Ricardo S.', age: 34, duration: '10 semanas', gender: 'male' },
+  { image: female2, name: 'Juliana C.', age: 32, duration: '14 semanas', gender: 'female' },
+  { image: male2, name: 'Lucas M.', age: 29, duration: '12 semanas', gender: 'male' },
+];
 
 export default function Resultado() {
   const navigate = useNavigate();
@@ -27,11 +40,6 @@ export default function Resultado() {
   }, []);
 
   const profile = getResultProfile(answers);
-  
-  // Pegar as transformações (feminina e masculina)
-  const femaleTransformation = transformations.find(t => t.gender === 'female');
-  const maleTransformation = transformations.find(t => t.gender === 'male');
-  
   const firstName = leadData?.name?.split(' ')[0] || 'Você';
 
   return (
@@ -118,91 +126,29 @@ export default function Resultado() {
         </div>
       </section>
 
-      {/* Transformações Estáticas */}
+      {/* Transformações */}
       <section className="py-12">
         <div className="container mx-auto px-4">
           <h3 className="text-2xl font-bold text-center mb-8">
             Transformações reais de alunos
           </h3>
 
-          <div className="space-y-10 max-w-2xl mx-auto">
-            {/* Transformação Feminina */}
-            {femaleTransformation && (
-              <div className="space-y-4">
+          <div className="space-y-8 max-w-2xl mx-auto">
+            {transformationImages.map((transformation, index) => (
+              <div key={index} className="space-y-3">
                 <div className="relative rounded-2xl overflow-hidden">
-                  <div className="grid grid-cols-2">
-                    {/* Antes */}
-                    <div className="relative">
-                      <img
-                        src={femaleTransformation.beforeImage}
-                        alt="Antes"
-                        className="w-full aspect-[3/4] object-cover"
-                      />
-                      <div className="absolute top-3 left-3 px-3 py-1 bg-black/70 rounded-full text-sm font-medium text-white">
-                        Antes
-                      </div>
-                    </div>
-                    {/* Depois */}
-                    <div className="relative">
-                      <img
-                        src={femaleTransformation.afterImage}
-                        alt="Depois"
-                        className="w-full aspect-[3/4] object-cover"
-                      />
-                      <div className="absolute top-3 right-3 px-3 py-1 bg-primary rounded-full text-sm font-medium text-primary-foreground">
-                        Depois
-                      </div>
-                    </div>
-                  </div>
-                  {/* Linha divisória central */}
-                  <div className="absolute top-0 bottom-0 left-1/2 w-1 bg-white/80 -translate-x-1/2" />
+                  <img
+                    src={transformation.image}
+                    alt={`Transformação de ${transformation.name}`}
+                    className="w-full h-auto object-cover"
+                  />
                 </div>
                 <div className="text-center">
-                  <p className="font-semibold">{femaleTransformation.name}, {femaleTransformation.age} anos</p>
-                  <p className="text-sm text-muted-foreground">{femaleTransformation.description}</p>
-                  <p className="text-sm text-primary mt-1">Resultado em {femaleTransformation.duration}</p>
+                  <p className="font-semibold">{transformation.name}, {transformation.age} anos</p>
+                  <p className="text-sm text-primary">Resultado em {transformation.duration}</p>
                 </div>
               </div>
-            )}
-
-            {/* Transformação Masculina */}
-            {maleTransformation && (
-              <div className="space-y-4">
-                <div className="relative rounded-2xl overflow-hidden">
-                  <div className="grid grid-cols-2">
-                    {/* Antes */}
-                    <div className="relative">
-                      <img
-                        src={maleTransformation.beforeImage}
-                        alt="Antes"
-                        className="w-full aspect-[3/4] object-cover"
-                      />
-                      <div className="absolute top-3 left-3 px-3 py-1 bg-black/70 rounded-full text-sm font-medium text-white">
-                        Antes
-                      </div>
-                    </div>
-                    {/* Depois */}
-                    <div className="relative">
-                      <img
-                        src={maleTransformation.afterImage}
-                        alt="Depois"
-                        className="w-full aspect-[3/4] object-cover"
-                      />
-                      <div className="absolute top-3 right-3 px-3 py-1 bg-primary rounded-full text-sm font-medium text-primary-foreground">
-                        Depois
-                      </div>
-                    </div>
-                  </div>
-                  {/* Linha divisória central */}
-                  <div className="absolute top-0 bottom-0 left-1/2 w-1 bg-white/80 -translate-x-1/2" />
-                </div>
-                <div className="text-center">
-                  <p className="font-semibold">{maleTransformation.name}, {maleTransformation.age} anos</p>
-                  <p className="text-sm text-muted-foreground">{maleTransformation.description}</p>
-                  <p className="text-sm text-primary mt-1">Resultado em {maleTransformation.duration}</p>
-                </div>
-              </div>
-            )}
+            ))}
           </div>
         </div>
       </section>
