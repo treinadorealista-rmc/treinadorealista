@@ -163,7 +163,7 @@ export default function Resultado() {
             </p>
             <Button 
               size="lg" 
-              className="text-lg px-10 gap-2"
+              className="text-lg px-10 gap-2 bg-green-600 hover:bg-green-700"
               onClick={() => navigate('/oferta')}
             >
               Ver Meu Protocolo Personalizado
