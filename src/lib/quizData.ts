@@ -25,8 +25,9 @@ export interface QuizResult {
   profile: string;
   title: string;
   subtitle: string;
-  description: string;
-  painPoints: string[];
+  whatItMeans: string;
+  whyMethodsFailed: string;
+  rightPath: string[];
   solution: string;
   protocolName: string;
 }
@@ -214,56 +215,56 @@ export const profileResults: Record<string, QuizResult> = {
     profile: 'skinny-fat',
     title: 'Falso Magro com Resistência Metabólica',
     subtitle: 'Seu metabolismo está trabalhando contra você',
-    description: 'Você é magro na balança, mas acumula gordura localizada — especialmente na barriga. Isso acontece por um desequilíbrio hormonal e metabólico que treinos genéricos não resolvem.',
-    painPoints: [
-      'Treina mas a barriga não some',
-      'Come pouco mas não emagrece',
-      'Sem força para ganhar músculo',
-      'Metabolismo "travado"',
+    whatItMeans: 'Você treina mas a gordura localizada persiste. Seu corpo desenvolveu resistência metabólica por treinos mal estruturados ou excesso de cardio que aumentou cortisol.',
+    whyMethodsFailed: 'Cardio excessivo aumentou cortisol e catabolismo. Dietas muito restritivas desaceleraram seu metabolismo. Treinos genéricos não criaram o estímulo certo para recomposição corporal.',
+    rightPath: [
+      'Quebra de platô com periodização inteligente',
+      'Ajuste de intensidade para reativar metabolismo',
+      'Protocolo de recomposição corporal específico para falso magro',
     ],
-    solution: 'Você precisa de um protocolo que primeiro corrija sua resistência metabólica, depois construa massa muscular enquanto elimina a gordura localizada. Não adianta fazer dieta restritiva ou cardio excessivo.',
-    protocolName: 'Protocolo Falso Magro 90D',
+    solution: 'Um plano que quebra a estagnação e força seu corpo a responder novamente.',
+    protocolName: 'Protocolo Recomposição 90D',
   },
   'overweight': {
     profile: 'overweight',
-    title: 'Perfil Resistente com Excesso de Peso',
-    subtitle: 'Sua genética dificulta, mas não impossibilita',
-    description: 'Seu corpo tem tendência a acumular gordura e resistência à perda de peso. Dietas restritivas só pioram porque desaceleram ainda mais seu metabolismo.',
-    painPoints: [
-      'Já tentou várias dietas sem sucesso',
-      'Perde peso e recupera tudo',
-      'Sente fome constante',
-      'Cansaço e falta de disposição',
+    title: 'Perfil Resistente com Estagnação',
+    subtitle: 'Seu corpo parou de responder aos estímulos',
+    whatItMeans: 'Você treina mas os resultados estagnaram. Seu metabolismo adaptou-se ao mesmo estímulo repetido e parou de progredir, entrando em modo de preservação.',
+    whyMethodsFailed: 'Mesmos treinos por muito tempo causaram adaptação negativa. Déficit calórico excessivo reduziu sua taxa metabólica. Faltou variação estratégica de estímulos.',
+    rightPath: [
+      'Quebra de platô com novos estímulos metabólicos',
+      'Ajuste de intensidade e volume de treino',
+      'Estratégia nutricional para reativar queima de gordura',
     ],
-    solution: 'Você precisa de um protocolo que acelere seu metabolismo gradualmente, sem passar fome. O foco é criar um déficit sustentável enquanto preserva massa muscular.',
-    protocolName: 'Protocolo Resistente 90D',
+    solution: 'Um plano que quebra a estagnação e força seu corpo a responder novamente.',
+    protocolName: 'Protocolo Queima Avançada 90D',
   },
   'skinny': {
     profile: 'skinny',
     title: 'Hardgainer com Metabolismo Acelerado',
     subtitle: 'Seu corpo queima tudo que você come',
-    description: 'Você tem dificuldade para ganhar peso e massa muscular. Seu metabolismo é tão acelerado que precisa de uma estratégia específica de alimentação e treino.',
-    painPoints: [
-      'Come muito mas não engorda',
-      'Treina pesado sem resultado',
-      'Sem força e resistência',
-      'Braços e pernas finos',
+    whatItMeans: 'Você treina mas ganha massa muito devagar. Seu metabolismo é extremamente eficiente em queimar calorias e precisa de sobrecarga estratégica para construir músculo.',
+    whyMethodsFailed: 'Treinos longos queimaram calorias que deveriam construir músculo. Volume excessivo sem intensidade adequada. Faltou periodização para maximizar ganhos de massa.',
+    rightPath: [
+      'Quebra de platô com sobrecarga progressiva inteligente',
+      'Ajuste de intensidade com menos volume e mais peso',
+      'Foco em exercícios compostos e recuperação adequada',
     ],
-    solution: 'Você precisa de um protocolo hipercalórico estratégico com treinos focados em força e hipertrofia. Nada de cardio excessivo que só queima suas calorias.',
-    protocolName: 'Protocolo Hardgainer 90D',
+    solution: 'Um plano que quebra a estagnação e força seu corpo a responder novamente.',
+    protocolName: 'Protocolo Massa Máxima 90D',
   },
   'athletic': {
     profile: 'athletic',
     title: 'Atleta em Fase de Otimização',
     subtitle: 'Você já está no caminho certo',
-    description: 'Parabéns! Você já tem uma base sólida de treino e não apresenta problemas significativos. Seu corpo está respondendo bem aos estímulos. Agora é hora de otimizar cada detalhe para alcançar a próxima fase da sua evolução.',
-    painPoints: [
-      'Quebrar platôs de performance',
-      'Otimizar recuperação muscular',
-      'Periodização mais inteligente',
-      'Maximizar resultados com eficiência',
+    whatItMeans: 'Seu corpo responde bem aos estímulos. Você tem base sólida e agora precisa de refinamento para alcançar o próximo nível de performance e estética.',
+    whyMethodsFailed: 'Treinos genéricos não consideram sua individualidade avançada. Falta de periodização específica limita ganhos. Recuperação e nutrição podem estar subotimizadas.',
+    rightPath: [
+      'Periodização avançada para maximizar performance',
+      'Otimização de recuperação e nutrição de alto nível',
+      'Refinamento técnico para eficiência máxima',
     ],
-    solution: 'Você precisa de um protocolo de otimização avançada que refine seus treinos, melhore sua recuperação e acelere seus ganhos — tudo construído sobre a base sólida que você já tem.',
+    solution: 'Um plano de otimização avançada construído sobre sua base sólida.',
     protocolName: 'Protocolo Performance 90D',
   },
   // Perfis para usuários SEDENTÁRIOS (nunca treinou ou < 1 ano)
@@ -271,42 +272,42 @@ export const profileResults: Record<string, QuizResult> = {
     profile: 'skinny-fat',
     title: 'Falso Magro em Fase de Adaptação',
     subtitle: 'Seu corpo precisa de uma base antes de progredir',
-    description: 'Você é magro na balança, mas acumula gordura localizada. Como ainda não tem experiência com treinos, seu corpo precisa de uma fase de adaptação antes de protocolos mais intensos.',
-    painPoints: [
-      'Nunca criou o hábito de treinar',
-      'Corpo não está acostumado com exercícios',
-      'Metabolismo lento por falta de estímulo',
-      'Sem base muscular para começar',
+    whatItMeans: 'Você acumula gordura localizada mesmo sendo magro na balança. Sem experiência com treinos, seu corpo está desacostumado a estímulos e seu metabolismo está lento por falta de ativação.',
+    whyMethodsFailed: 'Dietas restritivas apenas reduziram seu metabolismo ainda mais. Treinos genéricos da internet não criaram adaptação neuromuscular. Sem base, qualquer protocolo avançado seria ineficaz.',
+    rightPath: [
+      'Construção de base muscular com progressão controlada',
+      'Ativação metabólica gradual sem estresse excessivo',
+      'Criação de hábito sustentável antes de intensificar',
     ],
-    solution: 'Você precisa de um protocolo de primeiros passos que crie hábito, corrija postura e prepare seu corpo. Depois de criar a base, você avança para a recomposição corporal.',
+    solution: 'Um plano que cria base primeiro e evolui conforme o seu corpo responde.',
     protocolName: 'Protocolo Adaptação 90D',
   },
   'overweight-sedentary': {
     profile: 'overweight',
     title: 'Perfil Iniciante com Sobrepeso',
     subtitle: 'O primeiro passo é o mais importante',
-    description: 'Você tem gordura para perder e ainda não tem o hábito de treinar. A boa notícia é que iniciantes respondem muito bem aos primeiros estímulos — você verá resultados rápidos se seguir o protocolo.',
-    painPoints: [
-      'Nunca conseguiu manter uma rotina de exercícios',
-      'Desconforto ao se exercitar',
-      'Baixa disposição e energia',
-      'Medo de não conseguir acompanhar',
+    whatItMeans: 'Você tem gordura para perder e ainda não criou o hábito de treinar. Seu corpo está resistente por anos sem estímulo adequado, mas iniciantes respondem muito bem aos primeiros estímulos.',
+    whyMethodsFailed: 'Dietas radicais causaram efeito sanfona e desaceleraram metabolismo. Treinos muito intensos geraram desconforto e abandono. Faltou progressão adequada para seu nível atual.',
+    rightPath: [
+      'Construção de base com exercícios adaptados ao seu nível',
+      'Progressão gradual que respeita seus limites',
+      'Foco em mobilidade e criação de hábito antes de intensidade',
     ],
-    solution: 'Você precisa de um protocolo progressivo que comece do zero, respeitando seus limites. O foco inicial é criar hábito e mobilidade, depois acelerar a queima de gordura.',
+    solution: 'Um plano que cria base primeiro e evolui conforme o seu corpo responde.',
     protocolName: 'Protocolo Iniciante 90D',
   },
   'skinny-sedentary': {
     profile: 'skinny',
     title: 'Magro em Fase de Construção',
     subtitle: 'Hora de construir sua base muscular',
-    description: 'Você é magro e tem dificuldade para ganhar peso, mas ainda não tentou treinar de forma consistente. Seu corpo tem potencial, só precisa do estímulo certo.',
-    painPoints: [
-      'Nunca conseguiu criar rotina de treino',
-      'Não sabe por onde começar',
-      'Come pouco por falta de apetite',
-      'Metabolismo muito acelerado',
+    whatItMeans: 'Seu metabolismo acelerado queima tudo rapidamente. Sem estímulo de treino consistente, seu corpo não teve motivo para construir massa muscular e você permanece magro.',
+    whyMethodsFailed: 'Comer mais sem treinar adequadamente só gerou desconforto. Treinos genéricos não criaram sobrecarga progressiva necessária. Faltou estratégia específica para hardgainers iniciantes.',
+    rightPath: [
+      'Construção de base com foco em força fundamental',
+      'Estratégia alimentar para suportar ganho de massa',
+      'Treinos curtos e intensos que maximizam estímulo muscular',
     ],
-    solution: 'Você precisa de um protocolo focado em criar hábito alimentar e adaptação muscular. Com os estímulos certos, seu corpo vai começar a responder e você verá os primeiros ganhos.',
+    solution: 'Um plano que cria base primeiro e evolui conforme o seu corpo responde.',
     protocolName: 'Protocolo Construção 90D',
   },
 };

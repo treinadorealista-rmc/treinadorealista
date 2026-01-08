@@ -44,7 +44,7 @@ export default function Resultado() {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      {/* Hero Section */}
+      {/* Seção 1: Diagnóstico Completo */}
       <section className="relative py-12 md:py-20 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-background to-background" />
         <div className="grid-overlay opacity-30" />
@@ -69,68 +69,66 @@ export default function Resultado() {
         </div>
       </section>
 
-      {/* Profile Description */}
-      <section className="py-12 bg-card border-y border-border">
+      {/* Seção 2: O que isso significa na prática */}
+      <section className="py-10 bg-card border-y border-border">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto">
-            <p className="text-lg text-center mb-10">
-              {profile.description}
+            <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
+              <Zap className="w-5 h-5 text-primary" />
+              O que isso significa na prática
+            </h3>
+            <p className="text-muted-foreground leading-relaxed">
+              {profile.whatItMeans}
             </p>
+          </div>
+        </div>
+      </section>
 
-            {/* Pain Points / Next Challenges */}
-            <div className="mb-10">
-              {profile.profile === 'athletic' ? (
-                <h3 className="text-xl font-bold text-center mb-6 flex items-center justify-center gap-2">
-                  <Target className="w-5 h-5 text-primary" />
-                  Seus próximos desafios
-                </h3>
-              ) : (
-                <h3 className="text-xl font-bold text-center mb-6 flex items-center justify-center gap-2">
-                  <AlertTriangle className="w-5 h-5 text-destructive" />
-                  Por que você não viu resultados
-                </h3>
-              )}
-              
-              <div className="grid md:grid-cols-2 gap-4">
-                {profile.painPoints.map((point, index) => (
-                  <div 
-                    key={index}
-                    className="flex items-center gap-3 p-4 bg-background rounded-xl border border-border"
-                  >
-                    {profile.profile === 'athletic' ? (
-                      <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                        <span className="text-primary font-bold text-sm">→</span>
-                      </div>
-                    ) : (
-                      <div className="w-8 h-8 rounded-full bg-destructive/10 flex items-center justify-center flex-shrink-0">
-                        <span className="text-destructive font-bold text-sm">✗</span>
-                      </div>
-                    )}
-                    <span>{point}</span>
+      {/* Seção 3: Por que métodos comuns não funcionaram */}
+      <section className="py-10">
+        <div className="container mx-auto px-4">
+          <div className="max-w-3xl mx-auto">
+            <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
+              <AlertTriangle className="w-5 h-5 text-destructive" />
+              Por que métodos comuns não funcionaram para você até agora
+            </h3>
+            <p className="text-muted-foreground leading-relaxed">
+              {profile.whyMethodsFailed}
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Seção 4: O caminho certo para o seu perfil */}
+      <section className="py-10 bg-card border-y border-border">
+        <div className="container mx-auto px-4">
+          <div className="max-w-3xl mx-auto">
+            <h3 className="text-xl font-bold mb-6 flex items-center gap-2">
+              <Target className="w-5 h-5 text-primary" />
+              O caminho certo para o seu perfil
+            </h3>
+            <div className="space-y-4">
+              {profile.rightPath.map((point, index) => (
+                <div 
+                  key={index}
+                  className="flex items-center gap-4 p-4 bg-background rounded-xl border border-border"
+                >
+                  <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                    <span className="text-primary font-bold text-sm">{index + 1}</span>
                   </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Solution */}
-            <div className="p-6 bg-primary/5 border border-primary/20 rounded-2xl">
-              <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
-                <Zap className="w-5 h-5 text-primary" />
-                A solução para seu perfil
-              </h3>
-              <p className="text-muted-foreground">
-                {profile.solution}
-              </p>
+                  <span className="text-foreground">{point}</span>
+                </div>
+              ))}
             </div>
           </div>
         </div>
       </section>
 
-      {/* Transformações */}
+      {/* Seção 5: Resultados de pessoas com o MESMO perfil */}
       <section className="py-12">
         <div className="container mx-auto px-4">
           <h3 className="text-2xl font-bold text-center mb-8">
-            Transformações reais de alunos
+            Resultados de pessoas com o MESMO perfil
           </h3>
 
           <div className="space-y-8 max-w-2xl mx-auto">
@@ -153,15 +151,15 @@ export default function Resultado() {
         </div>
       </section>
 
-      {/* CTA Section */}
+      {/* Seção 6: Transição e CTA */}
       <section className="py-12 bg-card border-t border-border">
         <div className="container mx-auto px-4">
           <div className="max-w-2xl mx-auto text-center">
-            <h3 className="text-2xl md:text-3xl font-bold mb-4">
-              Pronto para sua transformação?
-            </h3>
-            <p className="text-muted-foreground mb-8">
-              Agora que você conhece seu diagnóstico, veja a solução personalizada que preparamos para o seu perfil.
+            <p className="text-lg text-muted-foreground mb-4">
+              Com base no seu diagnóstico, esta é a solução recomendada para você agora:
+            </p>
+            <p className="text-xl md:text-2xl font-bold text-primary mb-8">
+              {profile.solution}
             </p>
             <Button 
               size="lg" 
