@@ -16,10 +16,10 @@ import male1 from '@/assets/transformations/male-1.jpg';
 import male2 from '@/assets/transformations/male-2.jpg';
 
 const transformationImages = [
-  { image: female1, name: 'Fernanda M.', age: 28, duration: '12 semanas', gender: 'female' },
-  { image: male1, name: 'Ricardo S.', age: 34, duration: '10 semanas', gender: 'male' },
-  { image: female2, name: 'Juliana C.', age: 32, duration: '14 semanas', gender: 'female' },
-  { image: male2, name: 'Lucas M.', age: 29, duration: '12 semanas', gender: 'male' },
+  { image: female1, name: 'Andressa Teixeira', age: 35, duration: '12 semanas', gender: 'female' },
+  { image: male1, name: 'Bruno Pereira', age: 35, duration: '10 semanas', gender: 'male' },
+  { image: female2, name: 'Andressa Teixeira', age: 35, duration: '14 semanas', gender: 'female' },
+  { image: male2, name: 'Bruno Pereira', age: 35, duration: '12 semanas', gender: 'male' },
 ];
 
 export default function Resultado() {
