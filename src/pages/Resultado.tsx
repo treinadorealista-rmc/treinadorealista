@@ -102,12 +102,19 @@ export default function Resultado() {
               {profile.description}
             </p>
 
-            {/* Pain Points */}
+            {/* Pain Points / Next Challenges */}
             <div className="mb-10">
-              <h3 className="text-xl font-bold text-center mb-6 flex items-center justify-center gap-2">
-                <AlertTriangle className="w-5 h-5 text-destructive" />
-                Por que você não viu resultados
-              </h3>
+              {profile.profile === 'athletic' ? (
+                <h3 className="text-xl font-bold text-center mb-6 flex items-center justify-center gap-2">
+                  <Target className="w-5 h-5 text-primary" />
+                  Seus próximos desafios
+                </h3>
+              ) : (
+                <h3 className="text-xl font-bold text-center mb-6 flex items-center justify-center gap-2">
+                  <AlertTriangle className="w-5 h-5 text-destructive" />
+                  Por que você não viu resultados
+                </h3>
+              )}
               
               <div className="grid md:grid-cols-2 gap-4">
                 {profile.painPoints.map((point, index) => (
@@ -115,9 +122,15 @@ export default function Resultado() {
                     key={index}
                     className="flex items-center gap-3 p-4 bg-background rounded-xl border border-border"
                   >
-                    <div className="w-8 h-8 rounded-full bg-destructive/10 flex items-center justify-center flex-shrink-0">
-                      <span className="text-destructive font-bold text-sm">✗</span>
-                    </div>
+                    {profile.profile === 'athletic' ? (
+                      <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                        <span className="text-primary font-bold text-sm">→</span>
+                      </div>
+                    ) : (
+                      <div className="w-8 h-8 rounded-full bg-destructive/10 flex items-center justify-center flex-shrink-0">
+                        <span className="text-destructive font-bold text-sm">✗</span>
+                      </div>
+                    )}
                     <span>{point}</span>
                   </div>
                 ))}

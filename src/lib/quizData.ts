@@ -91,6 +91,7 @@ export const quizQuestions: QuizQuestion[] = [
       { id: 'no-time', label: 'Falta de tempo', description: 'Rotina corrida dificulta', icon: '⏰' },
       { id: 'no-knowledge', label: 'Não sei o que fazer', description: 'Muita informação confusa', icon: '🤷' },
       { id: 'no-motivation', label: 'Falta motivação', description: 'Começo mas não consigo manter', icon: '😔' },
+      { id: 'no-issues', label: 'Estou satisfeito com meu treino', description: 'Quero apenas otimizar meus resultados', icon: '✅' },
     ],
   },
   {
@@ -201,6 +202,16 @@ export const transformations: Transformation[] = [
     description: 'Ganhou 8kg de massa magra partindo do zero.',
     profiles: ['skinny', 'athletic'],
   },
+  {
+    id: '5',
+    name: 'Marcos T.',
+    age: 29,
+    duration: '14 semanas',
+    beforeImage: 'https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?w=300&h=400&fit=crop',
+    afterImage: 'https://images.unsplash.com/photo-1605296867304-46d5465a13f1?w=300&h=400&fit=crop',
+    description: 'Saiu de um shape bom para um shape excepcional com otimização do protocolo.',
+    profiles: ['athletic'],
+  },
 ];
 
 export const profileResults: Record<string, QuizResult> = {
@@ -246,11 +257,42 @@ export const profileResults: Record<string, QuizResult> = {
     solution: 'Você precisa de um protocolo hipercalórico estratégico com treinos focados em força e hipertrofia. Nada de cardio excessivo que só queima suas calorias.',
     protocolName: 'Protocolo Hardgainer 90D',
   },
+  'athletic': {
+    profile: 'athletic',
+    title: 'Atleta em Fase de Otimização',
+    subtitle: 'Você já está no caminho certo',
+    description: 'Parabéns! Você já tem uma base sólida de treino e não apresenta problemas significativos. Seu corpo está respondendo bem aos estímulos. Agora é hora de otimizar cada detalhe para alcançar a próxima fase da sua evolução.',
+    painPoints: [
+      'Quebrar platôs de performance',
+      'Otimizar recuperação muscular',
+      'Periodização mais inteligente',
+      'Maximizar resultados com eficiência',
+    ],
+    solution: 'Você precisa de um protocolo de otimização avançada que refine seus treinos, melhore sua recuperação e acelere seus ganhos — tudo construído sobre a base sólida que você já tem.',
+    protocolName: 'Protocolo Performance 90D',
+  },
 };
 
 export function getResultProfile(answers: UserAnswers): QuizResult {
   const bodyType = answers['body-type'];
+  const trainingTime = answers['training-time'];
+  const frustration = answers['frustration'];
   
+  // REGRA 1: Usuários experientes (intermediário+) sem problemas = Perfil Athletic
+  const isExperienced = trainingTime === 'advanced' || trainingTime === 'intermediate';
+  const hasNoIssues = frustration === 'no-issues';
+  const isAthletic = bodyType === 'athletic';
+  
+  if ((isExperienced && hasNoIssues) || (isAthletic && isExperienced)) {
+    return profileResults['athletic'];
+  }
+  
+  // REGRA 2: Tipo atlético = Athletic (mesmo sem muita experiência)
+  if (isAthletic) {
+    return profileResults['athletic'];
+  }
+  
+  // REGRA 3: Lógica original para outros perfis
   if (bodyType === 'skinny-fat') {
     return profileResults['skinny-fat'];
   }
@@ -263,7 +305,12 @@ export function getResultProfile(answers: UserAnswers): QuizResult {
     return profileResults['skinny'];
   }
   
-  // Default para falso magro (perfil mais comum)
+  // REGRA 4: Fallback inteligente - experientes vão para athletic
+  if (isExperienced) {
+    return profileResults['athletic'];
+  }
+  
+  // Default para falso magro (perfil mais comum para iniciantes)
   return profileResults['skinny-fat'];
 }
 
