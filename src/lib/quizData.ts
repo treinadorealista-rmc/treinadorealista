@@ -30,6 +30,7 @@ export interface QuizResult {
   rightPath: string[];
   solution: string;
   protocolName: string;
+  offerSubheadline: string;
 }
 
 export interface Transformation {
@@ -237,6 +238,7 @@ export const profileResults: Record<string, QuizResult> = {
     ],
     solution: 'Um plano que cria base primeiro e evolui conforme o seu corpo responde.',
     protocolName: 'Protocolo Adaptação 90D',
+    offerSubheadline: 'Baseado no seu diagnóstico de Adaptação, este sistema foi estruturado para criar sua base muscular do zero sem risco de lesão.',
   },
   // PERFIL 2: Hardgainer / Estagnada (Público Ativo)
   'hardgainer': {
@@ -252,6 +254,7 @@ export const profileResults: Record<string, QuizResult> = {
     ],
     solution: 'Um plano que quebra a estagnação e força seu corpo a responder novamente.',
     protocolName: 'Protocolo Performance 90D',
+    offerSubheadline: 'Baseado no seu diagnóstico de Hardgainer com Metabolismo Acelerado, este sistema foi estruturado para forçar adaptação e ganho de massa sem desperdício de energia.',
   },
   // PERFIL 3: Perda de Peso / Inflamação (Saúde 45+)
   'otimizacao': {
@@ -267,6 +270,7 @@ export const profileResults: Record<string, QuizResult> = {
     ],
     solution: 'Um plano de otimização metabólica focado em saúde e longevidade.',
     protocolName: 'Protocolo Otimização 90D',
+    offerSubheadline: 'Baseado no seu diagnóstico de Otimização Metabólica, este sistema foi estruturado para queimar gordura e aumentar disposição respeitando os limites do seu corpo.',
   },
 };
 
@@ -317,7 +321,8 @@ export const loadingMessages = [
 
 export const offerData = {
   originalPrice: 297,
-  discountPrice: 67.90,
+  discountPrice: 47.90,
   installments: 12,
   installmentPrice: 6.82,
+  anchorText: 'Um acompanhamento desse nível normalmente custa entre R$300 e R$500 por mês.',
 };
