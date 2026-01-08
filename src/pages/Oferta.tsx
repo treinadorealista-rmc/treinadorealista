@@ -52,7 +52,7 @@ export default function Oferta() {
     {
       icon: MessageCircle,
       title: 'Acompanhamento',
-      items: ['Comunidade exclusiva de alunos', 'Suporte via WhatsApp'],
+      items: ['Comunidade exclusiva de alunos no WhatsApp'],
     },
     {
       icon: Gift,
