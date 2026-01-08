@@ -28,16 +28,9 @@ export default function Resultado() {
 
   const profile = getResultProfile(answers);
   
-  // Pegar uma transformação feminina e uma masculina
-  const femaleTransformation = transformations.find(t => 
-    t.gender === 'female' && 
-    t.profiles.includes(answers['body-type'] || 'skinny-fat')
-  ) || transformations.find(t => t.gender === 'female');
-  
-  const maleTransformation = transformations.find(t => 
-    t.gender === 'male' && 
-    t.profiles.includes(answers['body-type'] || 'skinny-fat')
-  ) || transformations.find(t => t.gender === 'male');
+  // Pegar as transformações (feminina e masculina)
+  const femaleTransformation = transformations.find(t => t.gender === 'female');
+  const maleTransformation = transformations.find(t => t.gender === 'male');
   
   const firstName = leadData?.name?.split(' ')[0] || 'Você';
 
