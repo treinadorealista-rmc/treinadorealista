@@ -5,7 +5,7 @@ import {
   AlertTriangle, 
   Target, 
   Zap, 
-  CheckCircle
+  ArrowRight
 } from 'lucide-react';
 import { getResultProfile, UserAnswers } from '@/lib/quizData';
 
@@ -16,10 +16,10 @@ import male1 from '@/assets/transformations/male-1.jpg';
 import male2 from '@/assets/transformations/male-2.jpg';
 
 const transformationImages = [
-  { image: female1, name: 'Andressa Teixeira', age: 35, gender: 'female' },
-  { image: female2, name: 'Andressa Teixeira', age: 35, gender: 'female' },
-  { image: male1, name: 'Bruno Pereira', age: 35, gender: 'male' },
-  { image: male2, name: 'Bruno Pereira', age: 35, gender: 'male' },
+  { image: female1, name: 'Andressa Teixeira', age: 35, duration: '12 semanas', gender: 'female' },
+  { image: male1, name: 'Bruno Pereira', age: 35, duration: '10 semanas', gender: 'male' },
+  { image: female2, name: 'Andressa Teixeira', age: 35, duration: '14 semanas', gender: 'female' },
+  { image: male2, name: 'Bruno Pereira', age: 35, duration: '12 semanas', gender: 'male' },
 ];
 
 export default function Resultado() {
@@ -41,12 +41,6 @@ export default function Resultado() {
 
   const profile = getResultProfile(answers);
   const firstName = leadData?.name?.split(' ')[0] || 'Você';
-  const userGender = answers['gender'] || 'male';
-  
-  // Filter transformations by user gender
-  const filteredTransformations = transformationImages.filter(
-    t => t.gender === userGender
-  );
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -138,7 +132,7 @@ export default function Resultado() {
           </h3>
 
           <div className="space-y-8 max-w-2xl mx-auto">
-            {filteredTransformations.map((transformation, index) => (
+            {transformationImages.map((transformation, index) => (
               <div key={index} className="space-y-3">
                 <div className="relative rounded-2xl overflow-hidden">
                   <img
@@ -149,6 +143,7 @@ export default function Resultado() {
                 </div>
                 <div className="text-center">
                   <p className="font-semibold">{transformation.name}, {transformation.age} anos</p>
+                  <p className="text-sm text-primary">Resultado em {transformation.duration}</p>
                 </div>
               </div>
             ))}
@@ -168,11 +163,11 @@ export default function Resultado() {
             </p>
             <Button 
               size="lg" 
-              className="text-lg px-10 gap-2 bg-green-600 hover:bg-green-700 text-white"
+              className="text-lg px-10 gap-2"
               onClick={() => navigate('/oferta')}
             >
-              <CheckCircle className="w-5 h-5" />
-              Continuar para meu plano recomendado
+              Ver Meu Protocolo Personalizado
+              <ArrowRight className="w-5 h-5" />
             </Button>
           </div>
         </div>
