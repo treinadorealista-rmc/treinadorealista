@@ -89,7 +89,7 @@ export default function Oferta() {
           </h1>
           
           <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto">
-            {profile.offerSubheadline}
+            Baseado no seu diagnóstico de <span className="text-primary font-bold">{profile.archetypeName}</span>, {profile.offerSubheadline}
           </p>
         </div>
       </section>
