@@ -8,6 +8,7 @@ import Quiz from "./pages/Quiz";
 import Loading from "./pages/Loading";
 import Lead from "./pages/Lead";
 import Resultado from "./pages/Resultado";
+import Oferta from "./pages/Oferta";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -24,6 +25,7 @@ const App = () => (
           <Route path="/loading" element={<Loading />} />
           <Route path="/lead" element={<Lead />} />
           <Route path="/resultado" element={<Resultado />} />
+          <Route path="/oferta" element={<Oferta />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
