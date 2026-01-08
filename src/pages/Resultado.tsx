@@ -143,7 +143,6 @@ export default function Resultado() {
                 </div>
                 <div className="text-center">
                   <p className="font-semibold">{transformation.name}, {transformation.age} anos</p>
-                  <p className="text-sm text-primary">Resultado em {transformation.duration}</p>
                 </div>
               </div>
             ))}
