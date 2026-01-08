@@ -24,6 +24,8 @@ export default function Oferta() {
   const [leadData, setLeadData] = useState<{ name: string } | null>(null);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+    
     const savedAnswers = sessionStorage.getItem('quizAnswers');
     const savedLead = sessionStorage.getItem('leadData');
     
