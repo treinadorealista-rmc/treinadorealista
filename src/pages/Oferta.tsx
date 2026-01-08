@@ -50,11 +50,6 @@ export default function Oferta() {
       items: ['Treinos para seu biotipo específico', 'Sobrecarga progressiva inteligente'],
     },
     {
-      icon: Utensils,
-      title: 'Plano Alimentar Estratégico',
-      items: ['Alimentação flexível (sem dietas restritivas)', 'Ajustada ao seu metabolismo'],
-    },
-    {
       icon: MessageCircle,
       title: 'Acompanhamento',
       items: ['Comunidade exclusiva de alunos', 'Suporte via WhatsApp'],
