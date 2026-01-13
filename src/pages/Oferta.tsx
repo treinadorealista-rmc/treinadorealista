@@ -105,15 +105,17 @@ export default function Oferta() {
               Assista antes de continuar (leva menos de 4 minutos)
             </p>
             
-            {/* Video Placeholder */}
-            <div className="aspect-video rounded-2xl overflow-hidden border border-border mb-8">
-              <iframe
-                className="w-full h-full"
-                src="https://www.youtube.com/embed/27EdggR5-3g"
-                title="Vídeo de apresentação"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              />
+            {/* Video - Vertical Format (9:16) */}
+            <div className="flex justify-center mb-8">
+              <div className="w-full max-w-[320px] aspect-[9/16] rounded-2xl overflow-hidden border border-border">
+                <iframe
+                  className="w-full h-full"
+                  src="https://www.youtube.com/embed/27EdggR5-3g"
+                  title="Vídeo de apresentação"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                />
+              </div>
             </div>
             
             <p className="text-center text-xl md:text-2xl font-bold">
