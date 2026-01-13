@@ -106,10 +106,14 @@ export default function Oferta() {
             </p>
             
             {/* Video Placeholder */}
-            <div className="aspect-video bg-muted rounded-2xl flex items-center justify-center border border-border mb-8 cursor-pointer hover:bg-muted/80 transition-colors">
-              <div className="w-20 h-20 rounded-full bg-primary/20 flex items-center justify-center">
-                <Play className="w-10 h-10 text-primary fill-primary" />
-              </div>
+            <div className="aspect-video rounded-2xl overflow-hidden border border-border mb-8">
+              <iframe
+                className="w-full h-full"
+                src="https://www.youtube.com/embed/27EdggR5-3g"
+                title="Vídeo de apresentação"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              />
             </div>
             
             <p className="text-center text-xl md:text-2xl font-bold">
