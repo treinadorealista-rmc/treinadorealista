@@ -339,29 +339,44 @@ export const profileResults: Record<string, QuizResult> = {
 };
 
 export function getResultProfile(answers: UserAnswers): QuizResult {
-  const gender = answers['gender'];
-  const age = answers['age'];
-  const bodyType = answers['body-type'];
-  const trainingTime = answers['training-time'];
+  const gender = answers['gender'] || 'male';
+  const age = answers['age'] || '26-35';
+  const bodyType = answers['body-type'] || 'skinny-fat';
+  const trainingTime = answers['training-time'] || 'beginner';
   
+  // Flags de contexto para exclusão mútua
   const isOver40 = age === '45+' || age === '36-45';
+  const isFemale = gender === 'female';
+  const isOverweight = bodyType === 'overweight';
+  const isSedentary = trainingTime === 'never' || trainingTime === 'beginner';
+  const isSkinny = bodyType === 'skinny' || bodyType === 'skinny-fat';
+  const isActive = trainingTime === 'intermediate' || trainingTime === 'advanced';
+  
   let dominantProfile: string;
 
   // === FILTRO 1: SOBREPESO (Prioridade Máxima) ===
-  if (bodyType === 'overweight') {
+  // BLOQUEIA Hardgainer/Metabolismo Acelerado para usuários acima do peso
+  if (isOverweight) {
     dominantProfile = 'sobrepeso';
   }
-  // === FILTRO 2: IDADE 40+ ===
+  // === FILTRO 2: IDADE 40+ (Segunda Prioridade) ===
+  // Foco em Equilíbrio Hormonal e Otimização Metabólica
   else if (isOver40) {
     dominantProfile = 'otimizacao';
   }
-  // === FILTRO 3: SEDENTÁRIO ===
-  else if (trainingTime === 'never' || trainingTime === 'beginner') {
+  // === FILTRO 3: SEDENTÁRIO (Terceira Prioridade) ===
+  // BLOQUEIA frases que dizem "você treina pesado" para quem nunca treinou
+  else if (isSedentary) {
     dominantProfile = 'iniciante';
   }
-  // === FILTRO 4: ATIVO MAGRO (Fallback) ===
-  else {
+  // === FILTRO 4: HARDGAINER (Apenas Magros + Ativos) ===
+  // Somente para quem é magro E já treina ativamente
+  else if (isSkinny && isActive) {
     dominantProfile = 'hardgainer';
+  }
+  // === FALLBACK SEGURO ===
+  else {
+    dominantProfile = 'iniciante';
   }
 
   // === RETORNAR RESULTADO COM AJUSTE DE GÊNERO E IDADE ===
@@ -370,7 +385,7 @@ export function getResultProfile(answers: UserAnswers): QuizResult {
   
   if (isOver40 && dominantProfile === 'otimizacao') {
     // Aplicar variantes específicas para 40+
-    if (gender === 'female') {
+    if (isFemale) {
       result.title = baseResult.titleFemale40 || baseResult.titleFemale || baseResult.title;
       result.subtitle = baseResult.subtitleFemale40 || baseResult.subtitle;
       result.whatItMeans = baseResult.whatItMeansFemale40 || baseResult.whatItMeans;
@@ -382,7 +397,7 @@ export function getResultProfile(answers: UserAnswers): QuizResult {
       result.whatItMeans = baseResult.whatItMeansMale40 || baseResult.whatItMeans;
       result.rightPath = baseResult.rightPathMale40 || baseResult.rightPath;
     }
-  } else if (gender === 'female') {
+  } else if (isFemale) {
     // Aplicar variantes femininas para jovens
     result.title = baseResult.titleFemale || baseResult.title;
     result.archetypeName = baseResult.archetypeNameFemale || baseResult.archetypeName;
