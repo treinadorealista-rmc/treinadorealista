@@ -354,24 +354,24 @@ export function getResultProfile(answers: UserAnswers): QuizResult {
   
   let dominantProfile: string;
 
-  // === FILTRO 1: SOBREPESO (Prioridade Máxima) ===
-  // BLOQUEIA Hardgainer/Metabolismo Acelerado para usuários acima do peso
-  if (isOverweight) {
-    dominantProfile = 'sobrepeso';
-  }
-  // === FILTRO 2: IDADE 40+ (Segunda Prioridade) ===
+  // === PRIORIDADE 1: IDADE 40+ (Máxima Prioridade) ===
   // Foco em Equilíbrio Hormonal e Otimização Metabólica
-  else if (isOver40) {
+  if (isOver40) {
     dominantProfile = 'otimizacao';
   }
-  // === FILTRO 3: SEDENTÁRIO (Terceira Prioridade) ===
-  // BLOQUEIA frases que dizem "você treina pesado" para quem nunca treinou
-  else if (isSedentary) {
+  // === PRIORIDADE 2: SOBREPESO ===
+  // BLOQUEIA Hardgainer/Metabolismo Acelerado para usuários acima do peso
+  else if (isOverweight) {
+    dominantProfile = 'sobrepeso';
+  }
+  // === PRIORIDADE 3: FALSO MAGRO (skinny-fat) ===
+  // Usuário selecionou especificamente "Falso Magro" no quiz
+  else if (bodyType === 'skinny-fat') {
     dominantProfile = 'iniciante';
   }
-  // === FILTRO 4: HARDGAINER (Apenas Magros + Ativos) ===
+  // === PRIORIDADE 4: MAGRO + TREINA (Hardgainer) ===
   // Somente para quem é magro E já treina ativamente
-  else if (isSkinny && isActive) {
+  else if (bodyType === 'skinny' && isActive) {
     dominantProfile = 'hardgainer';
   }
   // === FALLBACK SEGURO ===
