@@ -400,9 +400,11 @@ export function getResultProfile(answers: UserAnswers): QuizResult {
     dominantProfile = 'iniciante';
   }
 
-  // === MODIFICADOR 40+ (Aplica depois da lógica principal) ===
-  // Se idade 40+ e NÃO é sobrepeso, direciona para otimização
-  if (isOver40 && !isOverweight) {
+  // ═══════════════════════════════════════════════════════════════
+  // MODIFICADOR 40+ (Aplicado SOMENTE para perfis específicos)
+  // NÃO sobrescreve: sobrepeso (GATE 1) e performance (GATE 2)
+  // ═══════════════════════════════════════════════════════════════
+  if (isOver40 && dominantProfile !== 'sobrepeso' && dominantProfile !== 'performance') {
     dominantProfile = 'otimizacao';
   }
 

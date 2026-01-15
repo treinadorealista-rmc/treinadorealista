@@ -28,6 +28,9 @@ export default function Resultado() {
   const [leadData, setLeadData] = useState<{ name: string } | null>(null);
 
   useEffect(() => {
+    // Garantir scroll para o topo ao carregar a página
+    window.scrollTo(0, 0);
+    
     const savedAnswers = sessionStorage.getItem('quizAnswers');
     const savedLead = sessionStorage.getItem('leadData');
     
