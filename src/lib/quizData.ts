@@ -363,49 +363,40 @@ export function getResultProfile(answers: UserAnswers): QuizResult {
   const bodyType = answers['body-type'] || 'skinny-fat';
   const trainingTime = answers['training-time'] || 'beginner';
   
-  // Flags de contexto para exclusão mútua
-  const isOver40 = age === '45+' || age === '36-45';
   const isFemale = gender === 'female';
-  const isOverweight = bodyType === 'overweight';
-  const isAthletic = bodyType === 'athletic';
-  const isSkinnyFat = bodyType === 'skinny-fat';
-  const isSkinny = bodyType === 'skinny';
-  const isSedentary = trainingTime === 'never' || trainingTime === 'beginner';
-  const isActive = trainingTime === 'intermediate' || trainingTime === 'advanced';
+  const isOver40 = age === '45+' || age === '36-45';
   
   let dominantProfile: string;
 
-  // === PRIORIDADE 1: SOBREPESO (Máxima Prioridade) ===
-  // BLOQUEIA Hardgainer/Metabolismo Acelerado para usuários acima do peso
-  if (isOverweight) {
+  // ═══════════════════════════════════════════════════════════════
+  // MAPEAMENTO FIXO (HARDCODED) - SEM EXCEÇÕES
+  // ═══════════════════════════════════════════════════════════════
+  
+  // REGRA 1: Sobrepeso → Metabolismo Lento (BLOQUEIO TOTAL)
+  // NÃO aplica modificador 40+ - SEMPRE sobrepeso
+  if (bodyType === 'overweight') {
     dominantProfile = 'sobrepeso';
   }
-  // === PRIORIDADE 2: ATLÉTICO ===
-  // Performance/Manutenção - JAMAIS "falso magro" para este perfil
-  else if (isAthletic) {
+  
+  // REGRA 2: Atlético → Performance (NUNCA "Falso Magro")
+  // NÃO aplica modificador 40+ - SEMPRE performance
+  else if (bodyType === 'athletic') {
     dominantProfile = 'performance';
   }
-  // === PRIORIDADE 3: MAGRO + TREINA (Hardgainer) ===
-  // Somente para quem é magro E já treina ativamente
-  else if (isSkinny && isActive) {
-    dominantProfile = 'hardgainer';
+  
+  // REGRA 3: Magro + Já Treina → Hardgainer (ou Otimização se 40+)
+  else if (bodyType === 'skinny' && (trainingTime === 'intermediate' || trainingTime === 'advanced')) {
+    dominantProfile = isOver40 ? 'otimizacao' : 'hardgainer';
   }
-  // === PRIORIDADE 4: FALSO MAGRO / SEDENTÁRIO ===
-  // Selecionou "skinny-fat" OU é sedentário com gordura localizada
-  else if (isSkinnyFat || isSedentary) {
-    dominantProfile = 'iniciante';
+  
+  // REGRA 4: Falso Magro OU Magro Sedentário → Falso Magro (ou Otimização se 40+)
+  else if (bodyType === 'skinny-fat' || (bodyType === 'skinny' && (trainingTime === 'never' || trainingTime === 'beginner'))) {
+    dominantProfile = isOver40 ? 'otimizacao' : 'iniciante';
   }
-  // === FALLBACK SEGURO ===
+  
+  // FALLBACK: Iniciante (ou Otimização se 40+)
   else {
-    dominantProfile = 'iniciante';
-  }
-
-  // ═══════════════════════════════════════════════════════════════
-  // MODIFICADOR 40+ (Aplicado SOMENTE para perfis específicos)
-  // NÃO sobrescreve: sobrepeso (GATE 1) e performance (GATE 2)
-  // ═══════════════════════════════════════════════════════════════
-  if (isOver40 && dominantProfile !== 'sobrepeso' && dominantProfile !== 'performance') {
-    dominantProfile = 'otimizacao';
+    dominantProfile = isOver40 ? 'otimizacao' : 'iniciante';
   }
 
   // === RETORNAR RESULTADO COM AJUSTE DE GÊNERO E IDADE ===
