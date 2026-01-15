@@ -29,7 +29,7 @@ export default function Resultado() {
 
   useEffect(() => {
     // Garantir scroll para o topo ao carregar a página
-    window.scrollTo(0, 0);
+    window.scrollTo({ top: 0, behavior: 'instant' });
     
     const savedAnswers = sessionStorage.getItem('quizAnswers');
     const savedLead = sessionStorage.getItem('leadData');
