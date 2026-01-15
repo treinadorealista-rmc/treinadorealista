@@ -15,9 +15,19 @@ import {
 } from 'lucide-react';
 import { getResultProfile, UserAnswers, offerData } from '@/lib/quizData';
 
-// Import transformation images
+// Import ALL transformation images
 import female1 from '@/assets/transformations/female-1.png';
+import female2 from '@/assets/transformations/female-2.png';
 import male1 from '@/assets/transformations/male-1.jpg';
+import male2 from '@/assets/transformations/male-2.jpg';
+
+// All transformation images with gender
+const transformationImages = [
+  { image: female1, name: 'Andressa Teixeira', age: 35, gender: 'female' },
+  { image: female2, name: 'Andressa Teixeira', age: 35, gender: 'female' },
+  { image: male1, name: 'Bruno Pereira', age: 35, gender: 'male' },
+  { image: male2, name: 'Bruno Pereira', age: 35, gender: 'male' },
+];
 
 export default function Oferta() {
   const [answers, setAnswers] = useState<UserAnswers>({});
@@ -40,10 +50,8 @@ export default function Oferta() {
   const profile = getResultProfile(answers);
   const userGender = answers['gender'] || 'female';
   
-  // Select transformation based on gender
-  const genderTransformation = userGender === 'male' 
-    ? { image: male1, name: 'Bruno Pereira', age: 35 }
-    : { image: female1, name: 'Andressa Teixeira', age: 35 };
+  // Filter ALL transformations by gender
+  const genderTransformations = transformationImages.filter(t => t.gender === userGender);
 
   const deliverables = [
     {
@@ -214,21 +222,27 @@ export default function Oferta() {
               <span className="text-muted-foreground">4.9/5.0 avaliação média dos alunos</span>
             </div>
             
-            {/* Gender-based Transformation */}
+            {/* Gender-based Transformations - ALL images */}
             <div className="bg-card border border-border rounded-2xl p-6">
               <p className="text-sm text-muted-foreground mb-4">
-                Resultado de aluno com perfil similar ao seu:
+                Resultados de alunos com perfil similar ao seu:
               </p>
-              <div className="flex justify-center">
-                <img 
-                  src={genderTransformation.image} 
-                  alt={`Transformação de ${genderTransformation.name}`}
-                  className="rounded-xl max-h-80 object-cover"
-                />
+              <div className="space-y-6">
+                {genderTransformations.map((transformation, index) => (
+                  <div key={index} className="space-y-3">
+                    <div className="flex justify-center">
+                      <img 
+                        src={transformation.image} 
+                        alt={`Transformação de ${transformation.name}`}
+                        className="rounded-xl max-h-80 object-cover"
+                      />
+                    </div>
+                    <p className="text-center font-medium">
+                      {transformation.name}, {transformation.age} anos
+                    </p>
+                  </div>
+                ))}
               </div>
-              <p className="mt-4 font-medium">
-                {genderTransformation.name}, {genderTransformation.age} anos
-              </p>
             </div>
           </div>
         </div>

@@ -336,6 +336,25 @@ export const profileResults: Record<string, QuizResult> = {
     archetypeNameFemale: 'Reativação Metabólica e Equilíbrio Hormonal',
     offerSubheadline: 'este sistema foi estruturado para queimar gordura e aumentar disposição respeitando os limites do seu corpo.',
   },
+  // PERFIL 4: Performance / Atlético (Para quem já tem corpo atlético)
+  'performance': {
+    profile: 'performance',
+    title: 'Atleta em Fase de Otimização',
+    titleFemale: 'Atleta em Fase de Otimização',
+    subtitle: 'Você já tem base sólida. Agora é hora de otimizar.',
+    whatItMeans: 'Seu corpo já responde bem a estímulos de treino. O próximo passo é periodização estratégica para quebrar platôs, maximizar resultados e manter a consistência em alto nível.',
+    whyMethodsFailed: 'Treinos genéricos não respeitam seu nível avançado. Você precisa de estímulos progressivos calibrados e recuperação otimizada para continuar evoluindo.',
+    rightPath: [
+      'Periodização estratégica para quebrar platôs',
+      'Otimização de recuperação e performance',
+      'Ajuste fino de intensidade e volume para máximo resultado',
+    ],
+    solution: 'Um protocolo de performance para atletas que querem ir além do que já conquistaram.',
+    protocolName: 'Protocolo Performance 90D',
+    archetypeName: 'Atleta em Fase de Otimização',
+    archetypeNameFemale: 'Atleta em Fase de Otimização',
+    offerSubheadline: 'este sistema foi estruturado para otimizar sua performance e quebrar platôs de forma inteligente.',
+  },
 };
 
 export function getResultProfile(answers: UserAnswers): QuizResult {
@@ -348,35 +367,43 @@ export function getResultProfile(answers: UserAnswers): QuizResult {
   const isOver40 = age === '45+' || age === '36-45';
   const isFemale = gender === 'female';
   const isOverweight = bodyType === 'overweight';
+  const isAthletic = bodyType === 'athletic';
+  const isSkinnyFat = bodyType === 'skinny-fat';
+  const isSkinny = bodyType === 'skinny';
   const isSedentary = trainingTime === 'never' || trainingTime === 'beginner';
-  const isSkinny = bodyType === 'skinny' || bodyType === 'skinny-fat';
   const isActive = trainingTime === 'intermediate' || trainingTime === 'advanced';
   
   let dominantProfile: string;
 
-  // === PRIORIDADE 1: IDADE 40+ (Máxima Prioridade) ===
-  // Foco em Equilíbrio Hormonal e Otimização Metabólica
-  if (isOver40) {
-    dominantProfile = 'otimizacao';
-  }
-  // === PRIORIDADE 2: SOBREPESO ===
+  // === PRIORIDADE 1: SOBREPESO (Máxima Prioridade) ===
   // BLOQUEIA Hardgainer/Metabolismo Acelerado para usuários acima do peso
-  else if (isOverweight) {
+  if (isOverweight) {
     dominantProfile = 'sobrepeso';
   }
-  // === PRIORIDADE 3: FALSO MAGRO (skinny-fat) ===
-  // Usuário selecionou especificamente "Falso Magro" no quiz
-  else if (bodyType === 'skinny-fat') {
-    dominantProfile = 'iniciante';
+  // === PRIORIDADE 2: ATLÉTICO ===
+  // Performance/Manutenção - JAMAIS "falso magro" para este perfil
+  else if (isAthletic) {
+    dominantProfile = 'performance';
   }
-  // === PRIORIDADE 4: MAGRO + TREINA (Hardgainer) ===
+  // === PRIORIDADE 3: MAGRO + TREINA (Hardgainer) ===
   // Somente para quem é magro E já treina ativamente
-  else if (bodyType === 'skinny' && isActive) {
+  else if (isSkinny && isActive) {
     dominantProfile = 'hardgainer';
+  }
+  // === PRIORIDADE 4: FALSO MAGRO / SEDENTÁRIO ===
+  // Selecionou "skinny-fat" OU é sedentário com gordura localizada
+  else if (isSkinnyFat || isSedentary) {
+    dominantProfile = 'iniciante';
   }
   // === FALLBACK SEGURO ===
   else {
     dominantProfile = 'iniciante';
+  }
+
+  // === MODIFICADOR 40+ (Aplica depois da lógica principal) ===
+  // Se idade 40+ e NÃO é sobrepeso, direciona para otimização
+  if (isOver40 && !isOverweight) {
+    dominantProfile = 'otimizacao';
   }
 
   // === RETORNAR RESULTADO COM AJUSTE DE GÊNERO E IDADE ===
