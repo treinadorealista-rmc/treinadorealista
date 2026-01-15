@@ -101,6 +101,11 @@ export default function Home() {
             {/* Right Content - Body Analysis Image */}
             <div className="relative flex justify-center lg:justify-end">
               <div className="relative">
+                {/* Expert Name */}
+                <h3 className="text-xl md:text-2xl font-bold text-center mb-4 text-foreground">
+                  Raony Mendes
+                </h3>
+                
                 {/* Glow Effect */}
                 <div className="absolute inset-0 bg-primary/20 blur-3xl rounded-full scale-75" />
                 
