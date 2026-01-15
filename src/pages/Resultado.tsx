@@ -134,6 +134,7 @@ export default function Resultado() {
           <div className="space-y-8 max-w-2xl mx-auto">
             {transformationImages
               .filter(t => t.gender === answers['gender'])
+              .slice(0, 1) // Exibe apenas 1 imagem por gênero (sem duplicação)
               .map((transformation, index) => (
                 <div key={index} className="space-y-3">
                   <div className="relative rounded-2xl overflow-hidden">
