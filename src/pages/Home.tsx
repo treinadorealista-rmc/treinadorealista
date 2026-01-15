@@ -112,9 +112,10 @@ export default function Home() {
                 {/* Image Container */}
                 <div className="relative rounded-2xl overflow-hidden border border-primary/30 bg-card/50 backdrop-blur-sm">
                   <img 
-                    src={expertPhoto} 
-                    alt="Treinador Realista - Expert em Transformação Corporal" 
+                    src="https://i.postimg.cc/TY7x6Dkr/Gemini-Generated-Image-r5xp0wr5xp0wr5xp.png" 
+                    alt="Raony Mendes - Treinador Realista" 
                     className="w-full max-w-md h-auto object-cover"
+                    loading="lazy"
                   />
                   
                   {/* Overlay Labels */}
