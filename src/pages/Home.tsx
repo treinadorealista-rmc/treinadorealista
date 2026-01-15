@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Target, Activity, Zap, CheckCircle2, Star, Users } from 'lucide-react';
-import bodyAnalysisImage from '@/assets/body-analysis.png';
+import expertPhoto from '@/assets/expert-photo.png';
 
 export default function Home() {
   const navigate = useNavigate();
@@ -107,16 +107,16 @@ export default function Home() {
                 {/* Image Container */}
                 <div className="relative rounded-2xl overflow-hidden border border-primary/30 bg-card/50 backdrop-blur-sm">
                   <img 
-                    src={bodyAnalysisImage} 
-                    alt="Análise de Composição Corporal - Massa Magra, Gordura Corporal, Massa Muscular" 
-                    className="w-full max-w-md h-auto"
+                    src={expertPhoto} 
+                    alt="Treinador Realista - Expert em Transformação Corporal" 
+                    className="w-full max-w-md h-auto object-cover"
                   />
                   
                   {/* Overlay Labels */}
                   <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-background/90 to-transparent p-4">
                     <div className="text-center">
-                      <p className="text-xs text-primary font-medium uppercase tracking-wider">Análise de Composição Corporal</p>
-                      <p className="text-xs text-muted-foreground mt-1">Massa Magra • Gordura Corporal • Massa Muscular • IMC</p>
+                      <p className="text-xs text-primary font-medium uppercase tracking-wider">Treinador Realista</p>
+                      <p className="text-xs text-muted-foreground mt-1">Especialista em Transformação Corporal</p>
                     </div>
                   </div>
                 </div>
