@@ -5,9 +5,10 @@ import {
   AlertTriangle, 
   Target, 
   Zap, 
-  ArrowRight
+  ArrowRight,
+  Loader2
 } from 'lucide-react';
-import { getResultProfile, UserAnswers } from '@/lib/quizData';
+import { getResultProfile, UserAnswers, QuizResult } from '@/lib/quizData';
 
 // Importar imagens de transformação
 import female1 from '@/assets/transformations/female-1.png';
@@ -33,6 +34,8 @@ export default function Resultado() {
   const navigate = useNavigate();
   const [answers, setAnswers] = useState<UserAnswers>({});
   const [leadData, setLeadData] = useState<{ name: string } | null>(null);
+  const [profile, setProfile] = useState<QuizResult | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     // Garantir scroll para o topo ao carregar a página
@@ -42,15 +45,30 @@ export default function Resultado() {
     const savedLead = sessionStorage.getItem('leadData');
     
     if (savedAnswers) {
-      setAnswers(JSON.parse(savedAnswers));
+      const parsedAnswers = JSON.parse(savedAnswers);
+      console.log('RESPOSTAS RECEBIDAS:', parsedAnswers);
+      setAnswers(parsedAnswers);
+      
+      const calculatedProfile = getResultProfile(parsedAnswers);
+      console.log('PERFIL CALCULADO:', calculatedProfile);
+      setProfile(calculatedProfile);
     }
     if (savedLead) {
       setLeadData(JSON.parse(savedLead));
     }
+    
+    setIsLoading(false);
   }, []);
 
-  const profile = getResultProfile(answers);
   const firstName = leadData?.name?.split(' ')[0] || 'Você';
+
+  if (isLoading || !profile) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <Loader2 className="w-8 h-8 animate-spin text-primary" />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -186,8 +204,13 @@ export default function Resultado() {
               <ArrowRight className="w-5 h-5" />
             </Button>
           </div>
-        </div>
-      </section>
+      </div>
+    </section>
+
+    {/* Debug Info (Remover em produção) */}
+    <div className="fixed bottom-0 left-0 right-0 bg-black/80 text-white text-xs p-2 z-50">
+      Debug: Perfil [{profile?.profile}] | Gênero: {answers['gender']} | Idade: {answers['age']} | Corpo: {answers['body-type']} | Treino: {answers['training-time']}
     </div>
+  </div>
   );
 }
