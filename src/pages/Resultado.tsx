@@ -26,7 +26,7 @@ const transformationImages = [
   { image: male1, name: 'Bruno Pereira', age: 35, gender: 'male' },
   { image: male2, name: 'Bruno Pereira', age: 35, gender: 'male' },
   { image: 'https://i.postimg.cc/8cVtd5Pk/Gemini-Generated-Image-q1j9vsq1j9vsq1j9.png', name: 'Rodrigo A.', age: 30, gender: 'male' },
-  { image: 'https://i.postimg.cc/MK5dRzkq/Gemini-Generated-Image-yysebxyysebxyyse.png', name: 'Felipe T.', age: 27, gender: 'male' },
+  { image: 'https://i.postimg.cc/MK5dRzkq/Gemini-Generated-Image-yysebxyysebxyyse.png', name: '', age: 0, gender: 'male' },
 ];
 
 export default function Resultado() {
@@ -153,9 +153,11 @@ export default function Resultado() {
                       className="w-full h-auto object-cover"
                     />
                   </div>
-                  <div className="text-center">
-                    <p className="font-semibold">{transformation.name}, {transformation.age} anos</p>
-                  </div>
+                  {transformation.name && (
+                    <div className="text-center">
+                      <p className="font-semibold">{transformation.name}, {transformation.age} anos</p>
+                    </div>
+                  )}
                 </div>
               ))}
           </div>
