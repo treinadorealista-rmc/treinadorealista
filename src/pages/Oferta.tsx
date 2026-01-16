@@ -74,12 +74,7 @@ export default function Oferta() {
       title: 'Manual da Constância Imbatível',
       items: ['Como treinar mesmo sem motivação e nunca mais parar no meio do caminho'],
     },
-    {
-      icon: Award,
-      title: 'Protocolo de Resultado Inicial – 21 Dias',
-      items: ['Como destravar o corpo e gerar os primeiros sinais de resultado rápido'],
-    },
-  ];
+];
 
   return (
     <div className="min-h-screen bg-background text-foreground">
