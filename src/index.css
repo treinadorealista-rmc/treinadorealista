@@ -2,10 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+/* Importação de Fontes */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap");
 
 @layer base {
   :root {
+    /* --- Cores do Sistema (Tema Escuro) --- */
     --background: 0 0% 5%;
     --foreground: 0 0% 98%;
 
@@ -36,25 +38,25 @@
 
     --radius: 0.75rem;
 
-    /* Custom Quiz Tokens */
+    /* --- Tokens Personalizados do Quiz --- */
     --gradient-primary: linear-gradient(135deg, hsl(25, 100%, 50%) 0%, hsl(15, 100%, 45%) 100%);
     --gradient-dark: linear-gradient(180deg, hsl(0, 0%, 8%) 0%, hsl(0, 0%, 3%) 100%);
     --gradient-card: linear-gradient(145deg, hsl(0, 0%, 10%) 0%, hsl(0, 0%, 6%) 100%);
+
     --glow-primary: 0 0 40px hsla(25, 100%, 50%, 0.3);
     --glow-intense: 0 0 60px hsla(25, 100%, 50%, 0.5);
+
     --shadow-card: 0 4px 24px hsla(0, 0%, 0%, 0.4);
     --shadow-button: 0 4px 20px hsla(25, 100%, 50%, 0.4);
   }
-}
 
-@layer base {
   * {
     @apply border-border;
   }
 
   body {
     @apply bg-background text-foreground font-sans antialiased;
-    font-family: 'Inter', sans-serif;
+    font-family: "Inter", sans-serif;
   }
 
   html {
@@ -63,14 +65,13 @@
 }
 
 @layer utilities {
+  /* --- Efeitos Visuais --- */
   .gradient-primary {
     background: var(--gradient-primary);
   }
-
   .gradient-dark {
     background: var(--gradient-dark);
   }
-
   .gradient-card {
     background: var(--gradient-card);
   }
@@ -78,7 +79,6 @@
   .glow-primary {
     box-shadow: var(--glow-primary);
   }
-
   .glow-intense {
     box-shadow: var(--glow-intense);
   }
@@ -86,7 +86,6 @@
   .shadow-card {
     box-shadow: var(--shadow-card);
   }
-
   .shadow-button {
     box-shadow: var(--shadow-button);
   }
@@ -98,29 +97,31 @@
     background-clip: text;
   }
 
+  /* --- Classes de Animação --- */
   .animate-pulse-glow {
     animation: pulse-glow 2s ease-in-out infinite;
   }
-
   .animate-slide-up {
     animation: slide-up 0.5s ease-out forwards;
   }
-
   .animate-fade-in {
     animation: fade-in 0.4s ease-out forwards;
   }
-
   .animate-scale-in {
     animation: scale-in 0.3s ease-out forwards;
   }
-
   .animate-progress {
     animation: progress-fill 2s ease-out forwards;
   }
+  .animate-spin-slow {
+    animation: spin-slow 3s linear infinite;
+  }
 }
 
+/* --- Keyframes --- */
 @keyframes pulse-glow {
-  0%, 100% {
+  0%,
+  100% {
     box-shadow: var(--glow-primary);
   }
   50% {
@@ -172,8 +173,4 @@
   to {
     transform: rotate(360deg);
   }
-}
-
-.animate-spin-slow {
-  animation: spin-slow 3s linear infinite;
 }
