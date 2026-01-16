@@ -16,10 +16,17 @@ import male1 from '@/assets/transformations/male-1.jpg';
 import male2 from '@/assets/transformations/male-2.jpg';
 
 const transformationImages = [
+  // Mulheres
   { image: female1, name: 'Andressa Teixeira', age: 35, gender: 'female' },
   { image: female2, name: 'Andressa Teixeira', age: 35, gender: 'female' },
+  { image: 'https://i.postimg.cc/C5y6v77r/Gemini-Generated-Image-mu42vqmu42vqmu42.png', name: 'Mariana S.', age: 34, gender: 'female' },
+  { image: 'https://i.postimg.cc/SNftrWMv/Gemini-Generated-Image-1h9ax51h9ax51h9a.png', name: 'Patrícia L.', age: 42, gender: 'female' },
+  { image: 'https://i.postimg.cc/25MH6Gs4/Gemini-Generated-Image-fndschfndschfnds.png', name: 'Carla B.', age: 29, gender: 'female' },
+  // Homens
   { image: male1, name: 'Bruno Pereira', age: 35, gender: 'male' },
   { image: male2, name: 'Bruno Pereira', age: 35, gender: 'male' },
+  { image: 'https://i.postimg.cc/8cVtd5Pk/Gemini-Generated-Image-q1j9vsq1j9vsq1j9.png', name: 'Rodrigo A.', age: 30, gender: 'male' },
+  { image: 'https://i.postimg.cc/MK5dRzkq/Gemini-Generated-Image-yysebxyysebxyyse.png', name: 'Felipe T.', age: 27, gender: 'male' },
 ];
 
 export default function Resultado() {
