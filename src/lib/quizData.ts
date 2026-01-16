@@ -358,46 +358,58 @@ export const profileResults: Record<string, QuizResult> = {
 };
 
 export function getResultProfile(answers: UserAnswers): QuizResult {
+  // 1. Extração segura das variáveis
   const gender = answers['gender'] || 'male';
   const age = answers['age'] || '26-35';
   const bodyType = answers['body-type'] || 'skinny-fat';
   const trainingTime = answers['training-time'] || 'beginner';
   
+  // 2. Flags Booleanas (Para facilitar leitura)
   const isFemale = gender === 'female';
   const isOver40 = age === '45+' || age === '36-45';
+  const isOverweight = bodyType === 'overweight';
+  const isAthletic = bodyType === 'athletic';
+  const isSkinnyFat = bodyType === 'skinny-fat';
+  const isSkinny = bodyType === 'skinny';
+  const isTrained = trainingTime === 'intermediate' || trainingTime === 'advanced';
   
   let dominantProfile: string;
 
   // ═══════════════════════════════════════════════════════════════
-  // HIERARQUIA ABSOLUTA (PRIMEIRA CORRESPONDÊNCIA GANHA)
+  // HIERARQUIA DE DECISÃO (A ORDEM IMPORTA MUITO)
   // ═══════════════════════════════════════════════════════════════
   
-  // PRIORIDADE 1: IDADE 40+ (ABSOLUTA - Independente do resto)
+  // NÍVEL 1: IDADE (Tem prioridade sobre peso e treino)
   if (isOver40) {
     dominantProfile = 'otimizacao';
   }
   
-  // PRIORIDADE 2: Sobrepeso → Metabolismo Lento (BLOQUEIO TOTAL)
-  else if (bodyType === 'overweight') {
+  // NÍVEL 2: SOBREPESO (Se não for velho, mas for gordo)
+  else if (isOverweight) {
     dominantProfile = 'sobrepeso';
   }
   
-  // PRIORIDADE 3: Atlético → Performance (NUNCA "Falso Magro")
-  else if (bodyType === 'athletic') {
+  // NÍVEL 3: ATLÉTICO (Se não for velho nem gordo, e for atlético)
+  // IMPORTANTE: Joga para performance, nunca para iniciante
+  else if (isAthletic) {
     dominantProfile = 'performance';
   }
   
-  // PRIORIDADE 4: Falso Magro → Falso Magro/Adaptação
-  else if (bodyType === 'skinny-fat') {
+  // NÍVEL 4: MAGRO (Ectomorfo)
+  else if (isSkinny) {
+    if (isTrained) {
+      dominantProfile = 'hardgainer'; // Magro que treina
+    } else {
+      dominantProfile = 'iniciante'; // Magro sedentário
+    }
+  }
+  
+  // NÍVEL 5: FALSO MAGRO (Skinny-fat)
+  else if (isSkinnyFat) {
     dominantProfile = 'iniciante';
   }
   
-  // PRIORIDADE 5: Magro + Treina → Hardgainer
-  else if (bodyType === 'skinny' && (trainingTime === 'intermediate' || trainingTime === 'advanced')) {
-    dominantProfile = 'hardgainer';
-  }
-  
-  // PRIORIDADE 6 (FALLBACK): Iniciante/Sedentário → Falso Magro
+  // FALLBACK
   else {
     dominantProfile = 'iniciante';
   }
