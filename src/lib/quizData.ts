@@ -369,34 +369,37 @@ export function getResultProfile(answers: UserAnswers): QuizResult {
   let dominantProfile: string;
 
   // ═══════════════════════════════════════════════════════════════
-  // MAPEAMENTO FIXO (HARDCODED) - SEM EXCEÇÕES
+  // HIERARQUIA ABSOLUTA (PRIMEIRA CORRESPONDÊNCIA GANHA)
   // ═══════════════════════════════════════════════════════════════
   
-  // REGRA 1: Sobrepeso → Metabolismo Lento (BLOQUEIO TOTAL)
-  // NÃO aplica modificador 40+ - SEMPRE sobrepeso
-  if (bodyType === 'overweight') {
+  // PRIORIDADE 1: IDADE 40+ (ABSOLUTA - Independente do resto)
+  if (isOver40) {
+    dominantProfile = 'otimizacao';
+  }
+  
+  // PRIORIDADE 2: Sobrepeso → Metabolismo Lento (BLOQUEIO TOTAL)
+  else if (bodyType === 'overweight') {
     dominantProfile = 'sobrepeso';
   }
   
-  // REGRA 2: Atlético → Performance (NUNCA "Falso Magro")
-  // NÃO aplica modificador 40+ - SEMPRE performance
+  // PRIORIDADE 3: Atlético → Performance (NUNCA "Falso Magro")
   else if (bodyType === 'athletic') {
     dominantProfile = 'performance';
   }
   
-  // REGRA 3: Magro + Já Treina → Hardgainer (ou Otimização se 40+)
+  // PRIORIDADE 4: Falso Magro → Falso Magro/Adaptação
+  else if (bodyType === 'skinny-fat') {
+    dominantProfile = 'iniciante';
+  }
+  
+  // PRIORIDADE 5: Magro + Treina → Hardgainer
   else if (bodyType === 'skinny' && (trainingTime === 'intermediate' || trainingTime === 'advanced')) {
-    dominantProfile = isOver40 ? 'otimizacao' : 'hardgainer';
+    dominantProfile = 'hardgainer';
   }
   
-  // REGRA 4: Falso Magro OU Magro Sedentário → Falso Magro (ou Otimização se 40+)
-  else if (bodyType === 'skinny-fat' || (bodyType === 'skinny' && (trainingTime === 'never' || trainingTime === 'beginner'))) {
-    dominantProfile = isOver40 ? 'otimizacao' : 'iniciante';
-  }
-  
-  // FALLBACK: Iniciante (ou Otimização se 40+)
+  // PRIORIDADE 6 (FALLBACK): Iniciante/Sedentário → Falso Magro
   else {
-    dominantProfile = isOver40 ? 'otimizacao' : 'iniciante';
+    dominantProfile = 'iniciante';
   }
 
   // === RETORNAR RESULTADO COM AJUSTE DE GÊNERO E IDADE ===
