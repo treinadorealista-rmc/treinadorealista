@@ -32,7 +32,7 @@ const transformationImages = [
 
 export default function Resultado() {
   const navigate = useNavigate();
-  const [answers, setAnswers] = useState<UserAnswers>({});
+  const [answers, setAnswers] = useState<UserAnswers | null>(null);
   const [leadData, setLeadData] = useState<{ name: string } | null>(null);
   const [profile, setProfile] = useState<QuizResult | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -46,7 +46,7 @@ export default function Resultado() {
     
     if (savedAnswers) {
       const parsedAnswers = JSON.parse(savedAnswers);
-      console.log('RESPOSTAS RECEBIDAS:', parsedAnswers);
+      console.log('DEBUG_FINAL_ANSWERS:', parsedAnswers);
       setAnswers(parsedAnswers);
       
       const calculatedProfile = getResultProfile(parsedAnswers);
@@ -62,7 +62,7 @@ export default function Resultado() {
 
   const firstName = leadData?.name?.split(' ')[0] || 'Você';
 
-  if (isLoading || !profile) {
+  if (isLoading || !answers || !profile) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <Loader2 className="w-8 h-8 animate-spin text-primary" />
@@ -161,7 +161,7 @@ export default function Resultado() {
 
           <div className="space-y-8 max-w-2xl mx-auto">
             {transformationImages
-              .filter(t => t.gender === answers['gender'])
+              .filter(t => t.gender === answers?.['gender'])
               .map((transformation, index) => (
                 <div key={index} className="space-y-3">
                   <div className="relative rounded-2xl overflow-hidden">
@@ -209,7 +209,7 @@ export default function Resultado() {
 
     {/* Debug Info (Remover em produção) */}
     <div className="fixed bottom-0 left-0 right-0 bg-black/80 text-white text-xs p-2 z-50">
-      Debug: Perfil [{profile?.profile}] | Gênero: {answers['gender']} | Idade: {answers['age']} | Corpo: {answers['body-type']} | Treino: {answers['training-time']}
+      Debug: Perfil [{profile?.profile}] | Gênero: {answers?.['gender']} | Idade: {answers?.['age']} | Corpo: {answers?.['body-type']} | Treino: {answers?.['training-time']}
     </div>
   </div>
   );
