@@ -214,7 +214,7 @@ import maleBeforeImg from '@/assets/transformations/male-before.jpg';
 import maleAfterImg from '@/assets/transformations/male-after.jpg';
 
 export const transformations: Transformation[] = [
-  // Transformação Feminina Principal
+  // === MULHERES (Exibidas apenas para gender: female) ===
   {
     id: 'f1',
     name: 'Fernanda M.',
@@ -226,7 +226,41 @@ export const transformations: Transformation[] = [
     profiles: ['skinny-fat', 'overweight', 'skinny', 'athletic'],
     gender: 'female',
   },
-  // Transformação Masculina Principal
+  {
+    id: 'f2',
+    name: 'Mariana S.',
+    age: 34,
+    duration: '90 dias',
+    beforeImage: 'https://i.postimg.cc/C5y6v77r/Gemini-Generated-Image-mu42vqmu42vqmu42.png',
+    afterImage: 'https://i.postimg.cc/C5y6v77r/Gemini-Generated-Image-mu42vqmu42vqmu42.png',
+    description: 'Reativação metabólica completa após os 30 anos.',
+    profiles: ['overweight', 'skinny-fat'],
+    gender: 'female',
+  },
+  {
+    id: 'f3',
+    name: 'Patrícia L.',
+    age: 42,
+    duration: '8 semanas',
+    beforeImage: 'https://i.postimg.cc/SNftrWMv/Gemini-Generated-Image-1h9ax51h9ax51h9a.png',
+    afterImage: 'https://i.postimg.cc/SNftrWMv/Gemini-Generated-Image-1h9ax51h9ax51h9a.png',
+    description: 'Equilíbrio hormonal e definição sem dietas malucas.',
+    profiles: ['otimizacao', 'overweight'],
+    gender: 'female',
+  },
+  {
+    id: 'f4',
+    name: 'Carla B.',
+    age: 29,
+    duration: '10 semanas',
+    beforeImage: 'https://i.postimg.cc/25MH6Gs4/Gemini-Generated-Image-fndschfndschfnds.png',
+    afterImage: 'https://i.postimg.cc/25MH6Gs4/Gemini-Generated-Image-fndschfndschfnds.png',
+    description: 'De falso magra a corpo atlético em tempo recorde.',
+    profiles: ['skinny-fat', 'beginner'],
+    gender: 'female',
+  },
+
+  // === HOMENS (Exibidos apenas para gender: male) ===
   {
     id: 'm1',
     name: 'Ricardo M.',
@@ -236,6 +270,28 @@ export const transformations: Transformation[] = [
     afterImage: maleAfterImg,
     description: 'Perdeu 15kg e ganhou definição muscular seguindo o protocolo à risca.',
     profiles: ['skinny-fat', 'overweight', 'skinny', 'athletic'],
+    gender: 'male',
+  },
+  {
+    id: 'm2',
+    name: 'Rodrigo A.',
+    age: 30,
+    duration: '90 dias',
+    beforeImage: 'https://i.postimg.cc/8cVtd5Pk/Gemini-Generated-Image-q1j9vsq1j9vsq1j9.png',
+    afterImage: 'https://i.postimg.cc/8cVtd5Pk/Gemini-Generated-Image-q1j9vsq1j9vsq1j9.png',
+    description: 'Ganho seco de massa muscular e quebra de platô.',
+    profiles: ['hardgainer', 'athletic'],
+    gender: 'male',
+  },
+  {
+    id: 'm3',
+    name: 'Felipe T.',
+    age: 27,
+    duration: '8 semanas',
+    beforeImage: 'https://i.postimg.cc/MK5dRzkq/Gemini-Generated-Image-yysebxyysebxyyse.png',
+    afterImage: 'https://i.postimg.cc/MK5dRzkq/Gemini-Generated-Image-yysebxyysebxyyse.png',
+    description: 'Definição abdominal e correção postural.',
+    profiles: ['skinny-fat', 'beginner'],
     gender: 'male',
   },
 ];
