@@ -67,7 +67,7 @@ export default function Oferta() {
     {
       icon: Gift,
       title: 'Bônus Exclusivos',
-      items: ['Guia de Receitas Rápidas'],
+      items: ['25 Receitas Simples, Rápidas e Saudáveis: O Guia Prático para Emagrecer Sem Complicação'],
     },
     {
       icon: Zap,
