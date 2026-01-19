@@ -64,20 +64,25 @@ export default function Oferta() {
       title: 'Acompanhamento',
       items: ['Comunidade exclusiva de alunos no WhatsApp'],
     },
+  ];
+
+  const bonuses = [
     {
-      icon: Gift,
-      title: 'Bônus Exclusivos',
-      items: [
-        '25 Receitas Simples, Rápidas e Saudáveis: O Guia Prático para Emagrecer Sem Complicação',
-        'Mounjaro de Pobre: O Mapa dos 10 Chás para Reduzir Inchaço e Acelerar a Queima Natural'
-      ],
+      number: 1,
+      title: 'Mounjaro de Pobre: O Mapa dos 10 Chás para Reduzir Inchaço e Acelerar a Queima Natural.',
+      description: 'Um protocolo simples, seguro e acessível para aumentar o gasto calórico diário e melhorar a aparência abdominal usando ingredientes comuns.',
     },
     {
-      icon: Zap,
-      title: 'Manual da Constância Imbatível',
-      items: ['Como treinar mesmo sem motivação e nunca mais parar no meio do caminho'],
+      number: 2,
+      title: '25 Receitas Simples, Rápidas e Saudáveis: O Guia Prático para Emagrecer Sem Complicação.',
+      description: null,
     },
-];
+    {
+      number: 3,
+      title: 'Manual da Constância Imbatível: O sistema psicológico que impede você de desistir antes de ver resultado.',
+      description: null,
+    },
+  ];
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -155,6 +160,49 @@ export default function Oferta() {
                       </li>
                     ))}
                   </ul>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Section: Bônus Exclusivos */}
+      <section className="py-10 bg-gradient-to-b from-background to-card">
+        <div className="container mx-auto px-4">
+          <div className="max-w-4xl mx-auto">
+            <div className="text-center mb-8">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 mb-4">
+                <Gift className="w-4 h-4 text-primary" />
+                <span className="text-sm font-medium text-primary">Bônus Exclusivos</span>
+              </div>
+              <h3 className="text-2xl md:text-3xl font-bold">Você também vai receber:</h3>
+            </div>
+            
+            <div className="space-y-4">
+              {bonuses.map((bonus) => (
+                <div 
+                  key={bonus.number} 
+                  className="p-6 bg-card border border-primary/20 rounded-2xl hover:border-primary/40 transition-all hover:shadow-lg hover:shadow-primary/5"
+                >
+                  <div className="flex gap-4">
+                    <div className="flex-shrink-0">
+                      <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center">
+                        <span className="text-primary font-bold">{bonus.number}</span>
+                      </div>
+                    </div>
+                    <div className="flex-1">
+                      <h4 className="font-bold text-lg mb-1">
+                        <span className="text-primary">Bônus {bonus.number}:</span> {bonus.title}
+                      </h4>
+                      {bonus.description && (
+                        <p className="text-muted-foreground">{bonus.description}</p>
+                      )}
+                    </div>
+                    <div className="flex-shrink-0 hidden sm:flex items-center">
+                      <Gift className="w-6 h-6 text-primary/50" />
+                    </div>
+                  </div>
                 </div>
               ))}
             </div>
