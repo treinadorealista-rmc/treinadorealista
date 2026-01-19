@@ -68,8 +68,8 @@ export default function Oferta() {
       icon: Gift,
       title: 'Bônus Exclusivos',
       items: [
-        'Mounjaro de Pobre: O Mapa dos 10 Chás para Reduzir Inchaço e Acelerar a Queima Natural',
-        'Um protocolo simples, seguro e acessível para aumentar o gasto calórico diário e melhorar a aparência abdominal usando ingredientes comuns.'
+        '25 Receitas Simples, Rápidas e Saudáveis: O Guia Prático para Emagrecer Sem Complicação',
+        'Mounjaro de Pobre: O Mapa dos 10 Chás para Reduzir Inchaço e Acelerar a Queima Natural — Um protocolo simples, seguro e acessível para aumentar o gasto calórico diário e melhorar a aparência abdominal usando ingredientes comuns.'
       ],
     },
     {
