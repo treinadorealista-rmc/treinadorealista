@@ -14,6 +14,7 @@ import {
   MessageCircle
 } from 'lucide-react';
 import { getResultProfile, UserAnswers, offerData } from '@/lib/quizData';
+import FAQ from '@/components/offer/FAQ';
 
 // Import ALL transformation images
 import female1 from '@/assets/transformations/female-1.png';
@@ -294,6 +295,9 @@ export default function Oferta() {
           </div>
         </div>
       </section>
+
+      {/* Section: FAQ */}
+      <FAQ />
     </div>
   );
 }
