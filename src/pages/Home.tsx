@@ -160,15 +160,6 @@ export default function Home() {
                 </div>
               </div>
 
-              <div className="flex items-start gap-4 p-4 rounded-xl bg-background border border-border">
-                <CheckCircle2 className="w-6 h-6 text-primary flex-shrink-0 mt-0.5" />
-                <div>
-                  <div className="font-semibold">Protocolo sob medida</div>
-                  <div className="text-sm text-muted-foreground">
-                    Treino e alimentação específicos para seu tipo de metabolismo
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
         </div>
