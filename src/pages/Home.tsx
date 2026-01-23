@@ -25,8 +25,8 @@ export default function Home() {
 
               {/* Headline */}
               <h1 className="text-display text-4xl md:text-5xl lg:text-6xl font-black mb-6 leading-tight">
-                Descubra seu{' '}
-                <span className="text-primary">Arquétipo Metabólico</span>
+                Por que treinos comuns{' '}
+                <span className="text-primary">não funcionam para o seu corpo?</span>
               </h1>
               
               <p className="text-lg md:text-xl text-muted-foreground max-w-xl mb-8">
