@@ -50,8 +50,8 @@ export default function Home() {
                     <Activity className="w-4 h-4 text-primary" />
                   </div>
                   <div className="text-left">
-                    <div className="font-semibold text-sm">Análise de IA</div>
-                    <div className="text-xs text-muted-foreground">Cruzamento de dados</div>
+                    <div className="font-semibold text-sm">Cruzamento de Dados</div>
+                    <div className="text-xs text-muted-foreground">Biomecânicos</div>
                   </div>
                 </div>
                 
