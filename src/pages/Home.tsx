@@ -64,7 +64,7 @@ export default function Home() {
 
               {/* CTA Button */}
               <Button onClick={handleStart} size="lg" className="text-lg px-10 py-6 h-auto font-bold w-full sm:w-auto">
-                Fazer Análise Gratuita
+                Quero meu Protocolo Personalizado
               </Button>
 
               {/* Social Proof */}
