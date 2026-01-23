@@ -30,8 +30,7 @@ export default function Home() {
               </h1>
               
               <p className="text-lg md:text-xl text-muted-foreground max-w-xl mb-8">
-                Faça a análise gratuita e descubra por que treinos comuns falham com você. 
-                Receba seu protocolo personalizado baseado em +2.000 alunos.
+                Descubra o protocolo exato para o seu biotipo baseado em biomecânica aplicada.
               </p>
 
               {/* Feature Cards */}
