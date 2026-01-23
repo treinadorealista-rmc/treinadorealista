@@ -2,16 +2,12 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Target, Activity, Zap, CheckCircle2, Star, Users } from 'lucide-react';
 import expertPhoto from '@/assets/expert-photo.png';
-
 export default function Home() {
   const navigate = useNavigate();
-
   const handleStart = () => {
     navigate('/quiz');
   };
-
-  return (
-    <div className="min-h-screen bg-background text-foreground">
+  return <div className="min-h-screen bg-background text-foreground">
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
         {/* Background Effects */}
@@ -41,7 +37,7 @@ export default function Home() {
                   </div>
                   <div className="text-left">
                     <div className="font-semibold text-sm">Diagnóstico Preciso</div>
-                    <div className="text-xs text-muted-foreground">9 perguntas estratégicas</div>
+                    <div className="text-xs text-muted-foreground">11 perguntas estratégicas</div>
                   </div>
                 </div>
                 
@@ -67,11 +63,7 @@ export default function Home() {
               </div>
 
               {/* CTA Button */}
-              <Button 
-                onClick={handleStart}
-                size="lg"
-                className="text-lg px-10 py-6 h-auto font-bold w-full sm:w-auto"
-              >
+              <Button onClick={handleStart} size="lg" className="text-lg px-10 py-6 h-auto font-bold w-full sm:w-auto">
                 Fazer Análise Gratuita
               </Button>
 
@@ -105,12 +97,7 @@ export default function Home() {
                 
                 {/* Image Container */}
                 <div className="relative rounded-2xl overflow-hidden border border-primary/30 bg-card/50 backdrop-blur-sm">
-                  <img 
-                    src="https://i.postimg.cc/TY7x6Dkr/Gemini-Generated-Image-r5xp0wr5xp0wr5xp.png" 
-                    alt="Raony Mendes - Treinador Realista" 
-                    className="w-full max-w-md h-auto object-cover"
-                    loading="lazy"
-                  />
+                  <img src="https://i.postimg.cc/TY7x6Dkr/Gemini-Generated-Image-r5xp0wr5xp0wr5xp.png" alt="Raony Mendes - Treinador Realista" className="w-full max-w-md h-auto object-cover" loading="lazy" />
                   
                   {/* Overlay Labels */}
                   <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-background/90 to-transparent p-4">
@@ -163,6 +150,5 @@ export default function Home() {
           </div>
         </div>
       </section>
-    </div>
-  );
+    </div>;
 }
