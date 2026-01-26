@@ -1,55 +1,36 @@
 
-## Plano: Simplificação e Centralização do Tracking de Checkout
+## Plano: Correção Urgente dos 3 Problemas de Tracking
 
-### Objetivo
-Centralizar a lógica de checkout em um único arquivo utilitário com trava de segurança, garantindo um único disparo de `InitiateCheckout` por sessão.
+### Problema 1 - index.html
+**Situacao Atual (linhas 6-10):**
+```html
+<!-- UTMify Pixel -->
+<script>
+  window.pixelId = "6972b36161aa06c267bef831";
+</script>
+<script src="https://cdn.utmify.com.br/scripts/pixel/pixel.js"></script>
+```
 
----
+**Correcao:** Adicionar `utmifyConfig` para desativar eventos automaticos
 
-### Alterações
-
-#### 1. Criar arquivo utilitário centralizado
-**Arquivo:** `src/utils/checkoutAction.ts` (NOVO)
-
-```typescript
-// Variável fora da função para garantir trava única por sessão
-let checkoutHasFired = false;
-
-export const triggerCheckout = () => {
-  if (checkoutHasFired) return;
-
-  // 1. Dispara UTMfy (se existir)
-  if (window.utmify?.send) {
-    window.utmify.send('InitiateCheckout', {
-      content_name: 'Protocolo RaonyPro',
-      value: 47.90,
-      currency: 'BRL'
-    });
-  }
-
-  // 2. Dispara Facebook (se existir)
-  if (typeof window.fbq === 'function') {
-    window.fbq('track', 'InitiateCheckout', {
-      content_name: 'Protocolo RaonyPro',
-      value: 47.90,
-      currency: 'BRL'
-    });
-  }
-
-  checkoutHasFired = true;
-  console.log('[TRACKING] InitiateCheckout enviado com sucesso');
-
-  // 3. Redirecionamento
-  window.open('https://lastlink.com/p/C2013B548/checkout-payment/', '_blank');
-};
+```html
+<!-- UTMify Pixel com configuração manual -->
+<script>
+  window.pixelId = "6972b36161aa06c267bef831";
+  window.utmifyConfig = {
+    autoPageView: false,
+    autoViewContent: false,
+    autoEvents: false,
+    captureUtm: true
+  };
+</script>
+<script src="https://cdn.utmify.com.br/scripts/pixel/pixel.js"></script>
 ```
 
 ---
 
-#### 2. Adicionar tipagem global segura
-**Arquivo:** `src/vite-env.d.ts`
-
-Atualizar para incluir tipos do `fbq` e `utmify`:
+### Problema 2 - src/vite-env.d.ts
+**Situacao Atual:**
 ```typescript
 /// <reference types="vite/client" />
 
@@ -61,84 +42,97 @@ interface Window {
 }
 ```
 
----
+**Correcao:** Adicionar tipagem completa para `utmify.config`, `pixelId` e `utmifyConfig`
 
-#### 3. Atualizar página de Oferta
-**Arquivo:** `src/pages/Oferta.tsx`
+```typescript
+/// <reference types="vite/client" />
 
-- Importar a função centralizada
-- Substituir o `onClick` do botão CTA (linha 242)
-
-**Antes:**
-```tsx
-onClick={() => window.open('https://lastlink.com/p/C2013B548/checkout-payment/', '_blank')}
-```
-
-**Depois:**
-```tsx
-import { triggerCheckout } from '@/utils/checkoutAction';
-// ...
-onClick={triggerCheckout}
-```
-
----
-
-#### 4. Atualizar componente FAQ
-**Arquivo:** `src/components/offer/FAQ.tsx`
-
-- Importar a função centralizada
-- Substituir o `onClick` do botão CTA (linha 68)
-
-**Antes:**
-```tsx
-onClick={() => window.open('https://lastlink.com/p/C2013B548/checkout-payment/', '_blank')}
-```
-
-**Depois:**
-```tsx
-import { triggerCheckout } from '@/utils/checkoutAction';
-// ...
-onClick={triggerCheckout}
+interface Window {
+  fbq?: (action: string, event: string, params?: object) => void;
+  utmify?: {
+    send: (event: string, params?: object) => void;
+    config?: (options: {
+      autoPageView?: boolean;
+      autoViewContent?: boolean;
+      autoEvents?: boolean;
+      captureUtm?: boolean;
+    }) => void;
+  };
+  pixelId?: string;
+  utmifyConfig?: {
+    autoPageView?: boolean;
+    autoViewContent?: boolean;
+    autoEvents?: boolean;
+    captureUtm?: boolean;
+  };
+}
 ```
 
 ---
 
-#### 5. Limpar página de Resultado (já está limpa)
-**Arquivo:** `src/pages/Resultado.tsx`
+### Problema 3 - src/pages/Resultado.tsx
+**Situacao Atual:**
+- Linha 1: `import { useEffect, useState } from 'react';` (falta `useRef`)
+- Nao possui disparo manual de ViewContent
+- Debug bar na linha 211-213 (opcional remover)
 
-- Verificado: **NÃO há disparos manuais** de `fbq` ou `utmify` neste arquivo
-- Os console.log de debug (linhas 49 e 53) podem ser mantidos ou removidos conforme preferência
-- A UTMify irá automaticamente disparar `ViewContent` ao carregar esta página
+**Correcoes:**
+
+1. **Linha 1** - Adicionar `useRef` ao import:
+```typescript
+import { useEffect, useState, useRef } from 'react';
+```
+
+2. **Apos linha 38** - Adicionar ref de controle:
+```typescript
+const viewContentSent = useRef(false);
+```
+
+3. **Apos o useEffect existente (linha 61)** - Adicionar novo useEffect para ViewContent:
+```typescript
+useEffect(() => {
+  if (profile && !viewContentSent.current) {
+    // Dispara ViewContent manual
+    if (window.utmify?.send) {
+      window.utmify.send('ViewContent', {
+        content_name: profile.title,
+        content_category: 'quiz_result'
+      });
+    }
+    
+    if (typeof window.fbq === 'function') {
+      window.fbq('track', 'ViewContent', {
+        content_name: profile.title,
+        content_category: 'quiz_result'
+      });
+    }
+    
+    viewContentSent.current = true;
+    console.log('[TRACKING] ViewContent manual disparado');
+  }
+}, [profile]);
+```
 
 ---
 
-### Resumo das Alterações
+### Resumo das Alteracoes
 
-| Arquivo | Ação |
-|---------|------|
-| `src/utils/checkoutAction.ts` | CRIAR - função centralizada com trava |
-| `src/vite-env.d.ts` | ATUALIZAR - adicionar tipos globais |
-| `src/pages/Oferta.tsx` | ATUALIZAR - usar `triggerCheckout` no botão |
-| `src/components/offer/FAQ.tsx` | ATUALIZAR - usar `triggerCheckout` no botão |
-| `src/pages/Resultado.tsx` | SEM ALTERAÇÕES - já está limpo |
-
----
-
-### Resultado Final
-
-| Evento | Responsável | Momento | Trava |
-|--------|-------------|---------|-------|
-| PageView | UTMify (automático) | Cada navegação | N/A |
-| ViewContent | UTMify (automático) | Cada página | N/A |
-| InitiateCheckout | `triggerCheckout` (manual) | Clique no CTA | Variável de módulo (`checkoutHasFired`) |
+| Arquivo | Linha(s) | Acao |
+|---------|----------|------|
+| `index.html` | 6-10 | Adicionar `utmifyConfig` com eventos automaticos desativados |
+| `src/vite-env.d.ts` | Todo | Substituir com tipagem completa |
+| `src/pages/Resultado.tsx` | 1 | Adicionar `useRef` ao import |
+| `src/pages/Resultado.tsx` | 39 | Adicionar `viewContentSent = useRef(false)` |
+| `src/pages/Resultado.tsx` | 62+ | Adicionar useEffect com disparo manual de ViewContent |
 
 ---
 
-### Seção Técnica
+### Resultado Final Esperado
 
-**Por que variável de módulo em vez de `useRef`?**
-
-A variável `checkoutHasFired` está fora da função, no escopo do módulo. Isso garante que:
-1. A trava persiste mesmo se o componente for desmontado/remontado
-2. Funciona tanto no `Oferta.tsx` quanto no `FAQ.tsx` (mesma variável compartilhada)
-3. Código mais simples sem necessidade de hooks React
+| Evento | Origem | Frequencia |
+|--------|--------|------------|
+| PageView | Manual (se necessario) | Controlado |
+| ViewContent | `Resultado.tsx` useEffect | 1x por sessao |
+| InitiateCheckout | `triggerCheckout` | 1x por sessao |
+| Eventos automaticos UTMify | Desativados via config | 0x |
+| SubscribedButtonClick | N/A | 0x |
