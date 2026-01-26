@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { triggerCheckout } from '@/utils/checkoutAction';
 import { Button } from '@/components/ui/button';
 import { 
   CheckCircle2, 
@@ -239,7 +240,7 @@ export default function Oferta() {
             <Button 
               size="lg" 
               className="w-full sm:w-auto text-lg px-12 py-6 bg-green-600 hover:bg-green-700 text-white font-bold mb-8"
-              onClick={() => window.open('https://lastlink.com/p/C2013B548/checkout-payment/', '_blank')}
+              onClick={triggerCheckout}
             >
               Acessar meu plano recomendado
             </Button>
