@@ -1,38 +1,15 @@
 
 
-## Plano: Substituir Pixel UTMify por Nova Versão
+## Plano: Atualizar Script UTM com Novos Atributos
 
 ### Alteração Única
 
 **Arquivo:** `index.html`
 
-**Linhas a substituir:** 6-17 (bloco atual do UTMify)
+**Linhas a substituir:** 14-20 (script UTM atual)
 
 **Conteúdo atual:**
 ```html
-<!-- UTMify Pixel com configuração manual -->
-<script>
-  window.pixelId = "6972b36161aa06c267bef831";
-  window.utmifyConfig = {
-    autoPageView: false,
-    autoViewContent: false,
-    autoEvents: false,
-    captureUtm: true
-  };
-</script>
-<script src="https://cdn.utmify.com.br/scripts/pixel/pixel.js"></script>
-```
-
-**Novo conteúdo:**
-```html
-<script>
-  window.pixelId = "6972b36161aa06c267bef831";
-  var a = document.createElement("script");
-  a.setAttribute("async", "");
-  a.setAttribute("defer", "");
-  a.setAttribute("src", "https://cdn.utmify.com.br/scripts/pixel/pixel.js");
-  document.head.appendChild(a);
-</script>
 <script
   src="https://cdn.utmify.com.br/scripts/utms/latest.js"
   data-utmify-prevent-xcod-sck
@@ -42,12 +19,29 @@
 ></script>
 ```
 
+**Novo conteúdo:**
+```html
+<script
+  src="https://cdn.utmify.com.br/scripts/utms/latest.js"
+  data-utmify-prevent-xcod-sck
+  data-utmify-prevent-subids
+  data-utmify-ignore-iframe
+  data-utmify-ignore-retry
+  async
+  defer
+></script>
+```
+
 ---
 
-### Resumo
+### Diferença
 
-| Script | Função |
-|--------|--------|
-| Primeiro script | Pixel principal UTMify (carregamento dinâmico async/defer) |
-| Segundo script | Captura de UTMs com prevenção de xcod e subids |
+| Atributo | Antes | Depois |
+|----------|-------|--------|
+| `data-utmify-prevent-xcod-sck` | Sim | Sim |
+| `data-utmify-prevent-subids` | Sim | Sim |
+| `data-utmify-ignore-iframe` | Não | **Adicionado** |
+| `data-utmify-ignore-retry` | Não | **Adicionado** |
+
+O script do pixel permanece inalterado.
 
