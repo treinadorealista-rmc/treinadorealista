@@ -49,7 +49,7 @@ export default function Loading() {
       if (currentStep >= steps) {
         clearInterval(timer);
         setTimeout(() => {
-          navigate('/lead');
+          navigate('/resultado');
         }, 500);
       }
     }, interval);
