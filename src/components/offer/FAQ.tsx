@@ -6,6 +6,7 @@ import {
 } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
 import { HelpCircle } from "lucide-react";
+import { triggerCheckout } from "@/utils/checkoutAction";
 
 const faqItems = [
   {
@@ -65,7 +66,7 @@ export default function FAQ() {
             <Button 
               size="lg" 
               className="w-full sm:w-auto text-lg px-12 py-6 bg-green-600 hover:bg-green-700 text-white font-bold"
-              onClick={() => window.open('https://lastlink.com/p/C2013B548/checkout-payment/', '_blank')}
+              onClick={triggerCheckout}
             >
               ACESSAR MEU PLANO
             </Button>
