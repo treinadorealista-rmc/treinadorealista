@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { 
@@ -36,6 +36,7 @@ export default function Resultado() {
   const [leadData, setLeadData] = useState<{ name: string } | null>(null);
   const [profile, setProfile] = useState<QuizResult | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const viewContentSent = useRef(false);
 
   useEffect(() => {
     // Garantir scroll para o topo ao carregar a página
@@ -59,6 +60,28 @@ export default function Resultado() {
     
     setIsLoading(false);
   }, []);
+
+  // Disparo manual de ViewContent
+  useEffect(() => {
+    if (profile && !viewContentSent.current) {
+      if (window.utmify?.send) {
+        window.utmify.send('ViewContent', {
+          content_name: profile.title,
+          content_category: 'quiz_result'
+        });
+      }
+      
+      if (typeof window.fbq === 'function') {
+        window.fbq('track', 'ViewContent', {
+          content_name: profile.title,
+          content_category: 'quiz_result'
+        });
+      }
+      
+      viewContentSent.current = true;
+      console.log('[TRACKING] ViewContent manual disparado');
+    }
+  }, [profile]);
 
   const firstName = leadData?.name?.split(' ')[0] || 'Você';
 
