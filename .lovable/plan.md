@@ -1,72 +1,144 @@
 
+## Plano: Simplificação e Centralização do Tracking de Checkout
 
-## Plano: Carregamento Síncrono do Pixel UTMify
+### Objetivo
+Centralizar a lógica de checkout em um único arquivo utilitário com trava de segurança, garantindo um único disparo de `InitiateCheckout` por sessão.
 
-### Problema Identificado
-O script atual usa `async` e `defer`, causando uma **race condition** onde o PageView do React dispara antes do pixel estar completamente carregado. Isso resulta em baixa cobertura do cookie `_fbp` (apenas 4%).
+---
 
-### Alteração no arquivo `index.html`
+### Alterações
 
-**Código Atual (linhas 6-14):**
-```html
-<!-- UTMify Pixel -->
-<script>
-  window.pixelId = "6972b36161aa06c267bef831";
-  var a = document.createElement("script");
-  a.setAttribute("async", "");
-  a.setAttribute("defer", "");
-  a.setAttribute("src", "https://cdn.utmify.com.br/scripts/pixel/pixel.js");
-  document.head.appendChild(a);
-</script>
+#### 1. Criar arquivo utilitário centralizado
+**Arquivo:** `src/utils/checkoutAction.ts` (NOVO)
+
+```typescript
+// Variável fora da função para garantir trava única por sessão
+let checkoutHasFired = false;
+
+export const triggerCheckout = () => {
+  if (checkoutHasFired) return;
+
+  // 1. Dispara UTMfy (se existir)
+  if (window.utmify?.send) {
+    window.utmify.send('InitiateCheckout', {
+      content_name: 'Protocolo RaonyPro',
+      value: 47.90,
+      currency: 'BRL'
+    });
+  }
+
+  // 2. Dispara Facebook (se existir)
+  if (typeof window.fbq === 'function') {
+    window.fbq('track', 'InitiateCheckout', {
+      content_name: 'Protocolo RaonyPro',
+      value: 47.90,
+      currency: 'BRL'
+    });
+  }
+
+  checkoutHasFired = true;
+  console.log('[TRACKING] InitiateCheckout enviado com sucesso');
+
+  // 3. Redirecionamento
+  window.open('https://lastlink.com/p/C2013B548/checkout-payment/', '_blank');
+};
 ```
 
-**Novo Código:**
-```html
-<!-- UTMify Pixel -->
-<script>
-  window.pixelId = "6972b36161aa06c267bef831";
-</script>
-<script src="https://cdn.utmify.com.br/scripts/pixel/pixel.js"></script>
+---
+
+#### 2. Adicionar tipagem global segura
+**Arquivo:** `src/vite-env.d.ts`
+
+Atualizar para incluir tipos do `fbq` e `utmify`:
+```typescript
+/// <reference types="vite/client" />
+
+interface Window {
+  fbq?: (action: string, event: string, params?: object) => void;
+  utmify?: {
+    send: (event: string, params?: object) => void;
+  };
+}
 ```
 
-### Código Resultante Completo do `<head>`:
-```html
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <!-- UTMify Pixel -->
-  <script>
-    window.pixelId = "6972b36161aa06c267bef831";
-  </script>
-  <script src="https://cdn.utmify.com.br/scripts/pixel/pixel.js"></script>
-  <title>Descubra seu Arquétipo Metabólico | Protocolo RaonyPro</title>
-  <link rel="icon" type="image/png" href="/favicon.png" />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <meta name="description" content="Faça a análise gratuita e descubra por que treinos comuns falham com você. Receba seu protocolo personalizado baseado em +2.000 alunos." />
-  <meta name="author" content="RaonyPro" />
+---
 
-  <meta property="og:title" content="Descubra seu Arquétipo Metabólico | Protocolo RaonyPro" />
-  <meta property="og:description" content="Faça a análise gratuita e descubra por que treinos comuns falham com você." />
-  <meta property="og:type" content="website" />
-  <meta property="og:image" content="https://treinadorealista.lovable.app/og-image.png" />
+#### 3. Atualizar página de Oferta
+**Arquivo:** `src/pages/Oferta.tsx`
 
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:site" content="@RaonyPro" />
-  <meta name="twitter:image" content="https://treinadorealista.lovable.app/og-image.png" />
-</head>
+- Importar a função centralizada
+- Substituir o `onClick` do botão CTA (linha 242)
+
+**Antes:**
+```tsx
+onClick={() => window.open('https://lastlink.com/p/C2013B548/checkout-payment/', '_blank')}
 ```
 
-### Resumo da Alteração
+**Depois:**
+```tsx
+import { triggerCheckout } from '@/utils/checkoutAction';
+// ...
+onClick={triggerCheckout}
+```
 
-| Item | Antes | Depois |
-|------|-------|--------|
-| Carregamento | Assíncrono (async/defer) | Síncrono (bloqueante) |
-| Pixel ID | `6972b36161aa06c267bef831` | Mantido |
-| Posição | Após viewport | Mantida |
-| Linhas alteradas | 6-14 | 6-9 |
+---
 
-### Benefício Esperado
-O pixel carregará de forma bloqueante, garantindo que o cookie `_fbp` seja criado **antes** do React montar e disparar o evento PageView.
+#### 4. Atualizar componente FAQ
+**Arquivo:** `src/components/offer/FAQ.tsx`
 
+- Importar a função centralizada
+- Substituir o `onClick` do botão CTA (linha 68)
+
+**Antes:**
+```tsx
+onClick={() => window.open('https://lastlink.com/p/C2013B548/checkout-payment/', '_blank')}
+```
+
+**Depois:**
+```tsx
+import { triggerCheckout } from '@/utils/checkoutAction';
+// ...
+onClick={triggerCheckout}
+```
+
+---
+
+#### 5. Limpar página de Resultado (já está limpa)
+**Arquivo:** `src/pages/Resultado.tsx`
+
+- Verificado: **NÃO há disparos manuais** de `fbq` ou `utmify` neste arquivo
+- Os console.log de debug (linhas 49 e 53) podem ser mantidos ou removidos conforme preferência
+- A UTMify irá automaticamente disparar `ViewContent` ao carregar esta página
+
+---
+
+### Resumo das Alterações
+
+| Arquivo | Ação |
+|---------|------|
+| `src/utils/checkoutAction.ts` | CRIAR - função centralizada com trava |
+| `src/vite-env.d.ts` | ATUALIZAR - adicionar tipos globais |
+| `src/pages/Oferta.tsx` | ATUALIZAR - usar `triggerCheckout` no botão |
+| `src/components/offer/FAQ.tsx` | ATUALIZAR - usar `triggerCheckout` no botão |
+| `src/pages/Resultado.tsx` | SEM ALTERAÇÕES - já está limpo |
+
+---
+
+### Resultado Final
+
+| Evento | Responsável | Momento | Trava |
+|--------|-------------|---------|-------|
+| PageView | UTMify (automático) | Cada navegação | N/A |
+| ViewContent | UTMify (automático) | Cada página | N/A |
+| InitiateCheckout | `triggerCheckout` (manual) | Clique no CTA | Variável de módulo (`checkoutHasFired`) |
+
+---
+
+### Seção Técnica
+
+**Por que variável de módulo em vez de `useRef`?**
+
+A variável `checkoutHasFired` está fora da função, no escopo do módulo. Isso garante que:
+1. A trava persiste mesmo se o componente for desmontado/remontado
+2. Funciona tanto no `Oferta.tsx` quanto no `FAQ.tsx` (mesma variável compartilhada)
+3. Código mais simples sem necessidade de hooks React
